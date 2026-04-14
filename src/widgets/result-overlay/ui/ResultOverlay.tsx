@@ -2,27 +2,36 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useGameStore } from '@/shared/lib/gameStore';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { getMultiplierTitle } from '@/entities/risk/lib/multiplierUtils';
+import { GamePhase } from '@/shared/types/game.types';
 
 export const ResultOverlay = () => {
-  const { result, winAmount, gamePhase, resetRound } = useGameStore();
+  const { result, resultCategory, winAmount, gamePhase, resetRound } = useGameStore();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (gamePhase === 'result') {
+    if (gamePhase === GamePhase.RESULT) {
       const timer = setTimeout(() => setShow(true), 500);
       return () => clearTimeout(timer);
     }
     setShow(false);
   }, [gamePhase]);
 
+  const title = resultCategory ? getMultiplierTitle(resultCategory) : '';
+
   return (
     <AnimatePresence>
       {show && (
-        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+        >
           <motion.div
             initial={{ scale: 0.5, opacity: 0, y: 50 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 1.2, opacity: 0 }}
+            exit={{ scale: 0.8, opacity: 0, transition: { duration: 0.2 } }}
             className="flex flex-col items-center gap-6"
           >
             {result === 'win' ? (
@@ -32,7 +41,7 @@ export const ResultOverlay = () => {
                   transition={{ repeat: Infinity, duration: 1 }}
                   className="text-6xl font-black text-dragon-gold drop-shadow-[0_0_30px_rgba(255,204,0,0.6)] uppercase tracking-tighter"
                 >
-                  Big Win!
+                  {title}
                 </motion.div>
                 <div className="text-4xl font-mono text-white font-bold">
                   + {winAmount.toLocaleString()}.00 <span className="text-lg opacity-50">$</span>
@@ -40,7 +49,7 @@ export const ResultOverlay = () => {
               </div>
             ) : (
               <div className="text-5xl font-black text-neon-pink drop-shadow-[0_0_30px_rgba(255,0,212,0.4)] uppercase">
-                Lost
+                {title}
               </div>
             )}
 
@@ -48,7 +57,7 @@ export const ResultOverlay = () => {
               Play Again
             </Button>
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

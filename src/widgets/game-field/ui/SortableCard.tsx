@@ -6,8 +6,7 @@ import { cn } from '@/lib/utils';
 interface Props {
   id: string;
   isRevealed?: boolean;
-  isWinner?: boolean;
-  multiplier?: number | string;
+  resultStatus?: 'win' | 'lost' | null;
   dragonType?: string;
   type: 'top' | 'bottom';
 }

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useGameStore } from '@/shared/lib/gameStore';
 import { cn } from '@/lib/utils';
+import { GamePhase } from '@/shared/types/game.types';
 
 const CARD_BACK = '/assets/cards/card_back.png';
 
@@ -16,7 +17,7 @@ const DRAGON_IMAGES: Record<string, string> = {
 interface Props {
   id: string;
   isRevealed?: boolean;
-  isWinner?: boolean;
+  resultStatus?: 'win' | 'lost' | null;
   dragonType?: string;
   multiplier?: string | number;
   type: 'top' | 'bottom';
@@ -26,7 +27,7 @@ interface Props {
 
 export const DragonCard = ({
   isRevealed = false,
-  isWinner = false,
+  resultStatus = null,
   dragonType = 'fire',
   multiplier,
   type,
@@ -40,15 +41,18 @@ export const DragonCard = ({
 
   let borderColor = 'border-white/10';
   if (showFront) {
-    borderColor =
-      isWinner && type === 'top' ? 'border-neon-cyan neon-glow-cyan' : 'border-white/20';
+    if (resultStatus === 'win')
+      borderColor = 'border-green-400 shadow-[0_0_15px_rgba(74,222,128,0.5)]';
+    else if (resultStatus === 'lost')
+      borderColor = 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]';
+    else borderColor = 'border-white/20';
   }
 
   return (
     <div
       className={cn(
         'relative w-[130px] h-[180px] group transition-all duration-300',
-        type === 'bottom' && gamePhase === 'arranging'
+        type === 'bottom' && gamePhase === GamePhase.ARRANGING
           ? 'cursor-grab active:cursor-grabbing hover:-translate-y-2'
           : 'cursor-default',
         className
@@ -65,39 +69,30 @@ export const DragonCard = ({
           className={cn(
             'relative w-full h-full rounded-2xl overflow-hidden border-2 shadow-2xl bg-[#0a0c10] flex items-center justify-center',
             borderColor,
-            showFront && !isWinner && type === 'top' && isRevealed ? 'opacity-30 grayscale' : ''
+            showFront && gamePhase === GamePhase.RESULT && !resultStatus
+              ? 'opacity-30 grayscale'
+              : ''
           )}
         >
           <img
             src={currentImage}
             className="absolute inset-0 w-full h-full object-cover z-0"
             alt="Card"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.parentElement!.style.backgroundColor = '#1a0505';
-            }}
           />
           {showFront && (
-            <div className="relative z-10 w-full h-full flex flex-col justify-end p-2 bg-gradient-to-t from-black via-transparent to-transparent">
+            <div
+              className={cn(
+                'relative z-10 w-full h-full flex flex-col justify-end p-2 bg-gradient-to-t from-black via-transparent to-transparent',
+                resultStatus === 'win' && 'bg-green-400/10',
+                resultStatus === 'lost' && 'bg-red-500/10'
+              )}
+            >
               <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
                 <span className="text-[14px] font-black uppercase text-white tracking-[0.2em]">
                   {dragonType}
                 </span>
               </div>
 
-              <AnimatePresence>
-                {type === 'top' && isRevealed && isWinner && (
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="absolute inset-0 flex items-center justify-center bg-neon-cyan/10"
-                  >
-                    <span className="text-4xl font-black text-neon-cyan drop-shadow-[0_0_15px_#00f2ff] tracking-tighter">
-                      WIN
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
               <span className="relative z-20 text-[10px] font-black uppercase text-white/50 tracking-[0.2em] text-center mb-1">
                 {dragonType}
               </span>

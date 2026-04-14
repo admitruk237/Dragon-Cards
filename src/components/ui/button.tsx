@@ -19,6 +19,7 @@ const buttonVariants = cva(
         destructive:
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
         link: 'text-primary underline-offset-4 hover:underline',
+        neon: 'bg-neon-pink text-white shadow-[0_0_30px_rgba(255,0,212,0.5)] uppercase font-black tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all relative overflow-hidden after:content-[""] after:absolute after:inset-0 after:bg-gradient-to-r after:from-white/0 after:via-white/20 after:to-white/0 after:-translate-x-full hover:after:translate-x-full after:transition-transform after:duration-1000',
       },
       size: {
         default:

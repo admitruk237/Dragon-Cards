@@ -1,8 +1,12 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import type { Card, GamePhase, RiskLevel } from '@/shared/types/game.types';
+import { type Card, GamePhase, type RiskLevel } from '@/shared/types/game.types';
 import { generateCards } from './generateCards';
 import { RISK_CONFIG } from '@/entities/risk/model/risk.config';
+import { type MultiplierCategory } from '@/entities/risk/lib/multiplierUtils';
+import { clampBet } from './betUtils';
+import { calculateRoundResult } from './roundUtils';
+import { runRevealSequence } from './revealSequence';
 
 interface GameStore {
   balance: number;
@@ -12,12 +16,13 @@ interface GameStore {
   topCards: Card[];
   bottomCards: Card[];
   result: 'win' | 'lost' | null;
+  resultCategory: MultiplierCategory | null;
   winAmount: number;
   isSoundOn: boolean;
   setBetAmount: (amount: number) => void;
   setRisk: (risk: RiskLevel) => void;
   placeBet: () => void;
-  reorderBottomCards: (fromIndex: number, toIndex: number) => void;
+  moveBottomCard: (activeId: string, overId?: string) => void;
   confirmArrangement: () => void;
   revealNext: (index: number) => void;
   finishRound: () => void;
@@ -28,7 +33,7 @@ interface GameStore {
   maxBet: () => void;
 }
 
-const { topCards: initialTop, bottomCards: initialBottom } = generateCards('low');
+const { topCards: initialTop, bottomCards: initialBottom } = generateCards();
 
 export const useGameStore = create<GameStore>()(
   persist(
@@ -36,66 +41,65 @@ export const useGameStore = create<GameStore>()(
       balance: 100000,
       betAmount: 1,
       risk: 'low',
-      gamePhase: 'idle',
+      gamePhase: GamePhase.IDLE,
       topCards: initialTop,
       bottomCards: initialBottom,
       result: null,
+      resultCategory: null,
       winAmount: 0,
       isSoundOn: true,
 
       setBetAmount: (amount) => {
         const { balance, gamePhase } = get();
-        if (gamePhase !== 'idle' && gamePhase !== 'result') return;
-
-        const MAX_BET = 1000;
-        const allowed = Math.min(Math.max(amount, 1), MAX_BET, balance);
-        set({ betAmount: allowed });
+        if (gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT) return;
+        set({ betAmount: clampBet(amount, balance) });
       },
 
       setRisk: (risk) => {
-        if (get().gamePhase !== 'idle' && get().gamePhase !== 'result') return;
+        const { gamePhase } = get();
+        if (gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT) return;
         set({ risk });
       },
 
       placeBet: () => {
-        const { balance, betAmount, risk, gamePhase } = get();
+        const { balance, betAmount, gamePhase } = get();
 
-        if (gamePhase !== 'idle' && gamePhase !== 'result') return;
+        if (gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT) return;
         if (betAmount > balance || betAmount <= 0) return;
 
-        const { topCards, bottomCards } = generateCards(risk);
+        const { topCards, bottomCards } = generateCards();
 
         set({
           balance: balance - betAmount,
           topCards,
           bottomCards,
-          gamePhase: 'arranging',
+          gamePhase: GamePhase.ARRANGING,
           result: null,
+          resultCategory: null,
           winAmount: 0,
         });
       },
 
-      reorderBottomCards: (fromIndex, toIndex) => {
-        if (get().gamePhase !== 'arranging') return;
+      moveBottomCard: (activeId, overId) => {
+        if (!overId || activeId === overId) return;
+        if (get().gamePhase !== GamePhase.ARRANGING) return;
+
         const cards = [...get().bottomCards];
-        const [moved] = cards.splice(fromIndex, 1);
-        cards.splice(toIndex, 0, moved);
-        set({ bottomCards: cards });
+        const oldIndex = cards.findIndex((c) => c.id === activeId);
+        const newIndex = cards.findIndex((c) => c.id === overId);
+
+        if (oldIndex !== -1 && newIndex !== -1) {
+          const [moved] = cards.splice(oldIndex, 1);
+          cards.splice(newIndex, 0, moved);
+          set({ bottomCards: cards });
+        }
       },
 
       confirmArrangement: async () => {
-        if (get().gamePhase !== 'arranging') return;
-        set({ gamePhase: 'revealing' });
+        if (get().gamePhase !== GamePhase.ARRANGING) return;
+        set({ gamePhase: GamePhase.REVEALING });
 
-        const { topCards } = get();
-        for (let i = 0; i < topCards.length; i++) {
-          // eslint-disable-next-line no-await-in-loop
-          await new Promise((resolve) => setTimeout(resolve, 350));
-          get().revealNext(i);
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        get().finishRound();
+        await runRevealSequence(get().topCards.length, get().revealNext, get().finishRound);
       },
 
       revealNext: (index) => {
@@ -107,23 +111,26 @@ export const useGameStore = create<GameStore>()(
       },
 
       finishRound: () => {
-        const { topCards, betAmount, balance, risk } = get();
+        const { topCards, bottomCards, betAmount, balance, risk } = get();
         const config = RISK_CONFIG[risk];
 
-        const winIndex = topCards.findIndex((c) => c.value === 'WIN');
-        const outcomeValue = config.multipliers_layout[winIndex];
+        const roundData = calculateRoundResult(
+          topCards,
+          bottomCards,
+          config.multipliers_layout,
+          betAmount,
+          balance
+        );
 
-        if (outcomeValue === 'LOST') {
-          set({ result: 'lost', gamePhase: 'result' });
-        } else {
-          const winAmount = betAmount * outcomeValue;
-          set({
-            winAmount,
-            result: 'win',
-            balance: balance + winAmount,
-            gamePhase: 'result',
-          });
-        }
+        set({
+          topCards: roundData.updatedTop,
+          bottomCards: roundData.updatedBottom,
+          winAmount: roundData.winAmount,
+          result: roundData.result,
+          resultCategory: roundData.resultCategory,
+          balance: roundData.newBalance,
+          gamePhase: GamePhase.RESULT,
+        });
       },
 
       toggleSound: () => {
@@ -132,27 +139,26 @@ export const useGameStore = create<GameStore>()(
 
       resetRound: () => {
         set({
-          gamePhase: 'idle',
+          gamePhase: GamePhase.IDLE,
           result: null,
+          resultCategory: null,
           winAmount: 0,
         });
       },
 
       halfBet: () => {
-        const { betAmount } = get();
-        set({ betAmount: Math.max(1, Math.floor(betAmount / 2)) });
+        const { setBetAmount, betAmount } = get();
+        setBetAmount(Math.floor(betAmount / 2));
       },
 
       doubleBet: () => {
-        const { betAmount, balance } = get();
-        const MAX_BET = 1000;
-        set({ betAmount: Math.min(balance, betAmount * 2, MAX_BET) });
+        const { setBetAmount, betAmount } = get();
+        setBetAmount(betAmount * 2);
       },
 
       maxBet: () => {
-        const { balance } = get();
-        const MAX_BET = 1000;
-        set({ betAmount: Math.min(balance, MAX_BET) });
+        const { setBetAmount, balance } = get();
+        setBetAmount(balance);
       },
     }),
     {
