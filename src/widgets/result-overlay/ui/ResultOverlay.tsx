@@ -39,16 +39,17 @@ export const ResultOverlay = () => {
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ repeat: Infinity, duration: 1 }}
-                  className="text-6xl font-black text-dragon-gold drop-shadow-[0_0_30px_rgba(255,204,0,0.6)] uppercase tracking-tighter"
+                  className="text-4xl md:text-6xl font-black text-dragon-gold drop-shadow-[0_0_30px_rgba(255,204,0,0.6)] uppercase tracking-tighter text-center px-4"
                 >
                   {title}
                 </motion.div>
-                <div className="text-4xl font-mono text-white font-bold">
-                  + {winAmount.toLocaleString()}.00 <span className="text-lg opacity-50">$</span>
+                <div className="text-2xl md:text-4xl font-mono text-white font-bold">
+                  + {winAmount.toLocaleString()}.00{' '}
+                  <span className="text-sm md:text-lg opacity-50">$</span>
                 </div>
               </div>
             ) : (
-              <div className="text-5xl font-black text-neon-pink drop-shadow-[0_0_30px_rgba(255,0,212,0.4)] uppercase">
+              <div className="text-3xl md:text-5xl font-black text-neon-pink drop-shadow-[0_0_30px_rgba(255,0,212,0.4)] uppercase text-center px-4">
                 {title}
               </div>
             )}

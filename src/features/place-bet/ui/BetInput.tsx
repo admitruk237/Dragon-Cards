@@ -9,14 +9,15 @@ export const BetInput = () => {
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
-      <div className="flex justify-between items-center px-0.5">
-        <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.15em]">
-          Bet Amount
-        </span>
-        <span className="text-[10px] font-bold text-white/30">Max: 1000.00 $</span>
+      <div className="flex flex-col gap-2 px-0.5">
+        <span className="text-sm font-bold text-white uppercase tracking-[0.15em]">Bet Amount</span>
+        <div className="flex justify-between">
+          <span className="text-sm text-white/30">Max: 1000.00</span>
+          <span className="text-sm  text-white/30">$</span>
+        </div>
       </div>
 
-      <div className="relative flex items-center bg-[#0d0f12] border border-white/5 rounded-xl transition-all duration-200 focus-within:border-blue-500/40 focus-within:ring-1 focus-within:ring-blue-500/10">
+      <div className="relative flex items-center bg-[#0e141e] border border-white/5 rounded-xl transition-all duration-200 focus-within:border-blue-500/40 focus-within:ring-1 focus-within:ring-blue-500/10">
         <Input
           type="number"
           value={betAmount || ''}
@@ -57,8 +58,6 @@ export const BetInput = () => {
           >
             Max
           </Button>
-          <span className="w-[1px] h-3 bg-white/10 mx-0.5" />
-          <span className="text-xs font-bold text-blue-500 pr-1 select-none">$</span>
         </div>
       </div>
     </div>

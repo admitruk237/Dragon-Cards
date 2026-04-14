@@ -37,12 +37,9 @@ export const GameField = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-10 w-full max-w-6xl py-6 animate-in fade-in zoom-in duration-500">
-      <div className="flex flex-col gap-6 items-center">
-        <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em]">
-          Dragon Realm
-        </span>
-        <div className="flex gap-4">
+    <div className="flex flex-col items-center gap-6 md:gap-10 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
+      <div className="flex flex-col gap-4 md:gap-6 items-center">
+        <div className="flex gap-2 md:gap-4">
           {topCards.map((card) => (
             <DragonCard
               key={card.id}
@@ -62,13 +59,13 @@ export const GameField = () => {
             items={bottomCards.map((c) => c.id)}
             strategy={horizontalListSortingStrategy}
           >
-            <div className="flex gap-4">
+            <div className="flex gap-2 md:gap-4">
               {bottomCards.map((card, i) => {
                 const multiplier = config.multipliers_layout[i];
                 const category = getMultiplierCategory(multiplier);
 
                 return (
-                  <div key={card.id} className="flex flex-col items-center gap-5">
+                  <div key={card.id} className="flex flex-col items-center gap-2 md:gap-5">
                     <SortableCard
                       id={card.id}
                       dragonType={card.dragonType}

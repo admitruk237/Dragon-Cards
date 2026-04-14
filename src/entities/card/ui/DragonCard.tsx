@@ -51,7 +51,7 @@ export const DragonCard = ({
   return (
     <div
       className={cn(
-        'relative w-[130px] h-[180px] group transition-all duration-300',
+        'relative w-[65px] h-[120px] md:w-[95px] md:h-[180px] group transition-all duration-300',
         type === 'bottom' && gamePhase === GamePhase.ARRANGING
           ? 'cursor-grab active:cursor-grabbing hover:-translate-y-2'
           : 'cursor-default',
@@ -88,19 +88,19 @@ export const DragonCard = ({
               )}
             >
               <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
-                <span className="text-[14px] font-black uppercase text-white tracking-[0.2em]">
+                <span className="text-[10px] md:text-[14px] font-black uppercase text-white tracking-[0.2em] rotate-[-10deg]">
                   {dragonType}
                 </span>
               </div>
 
-              <span className="relative z-20 text-[10px] font-black uppercase text-white/50 tracking-[0.2em] text-center mb-1">
+              <span className="relative z-20 text-[8px] md:text-[10px] font-black uppercase text-white/50 tracking-[0.2em] text-center mb-0.5 md:mb-1">
                 {dragonType}
               </span>
             </div>
           )}
           {showFront && multiplier && (
-            <div className="absolute bottom-3 px-3 py-1 bg-black/80 rounded-full border border-white/20 z-30">
-              <span className="text-[11px] font-black text-white">{multiplier}</span>
+            <div className="absolute bottom-1.5 md:bottom-3 px-1.5 md:px-3 py-0.5 md:py-1 bg-black/80 rounded-full border border-white/20 z-30">
+              <span className="text-[8px] md:text-[11px] font-black text-white">{multiplier}</span>
             </div>
           )}
           {!showFront && (
