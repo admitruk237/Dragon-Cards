@@ -11,7 +11,7 @@ export const ResultOverlay = () => {
 
   useEffect(() => {
     if (gamePhase === GamePhase.RESULT) {
-      const timer = setTimeout(() => setShow(true), 500);
+      const timer = setTimeout(() => setShow(true), 1500);
       return () => clearTimeout(timer);
     }
     setShow(false);
@@ -44,8 +44,7 @@ export const ResultOverlay = () => {
                   {title}
                 </motion.div>
                 <div className="text-2xl md:text-4xl font-mono text-white font-bold">
-                  + {winAmount.toLocaleString()}.00{' '}
-                  <span className="text-sm md:text-lg opacity-50">$</span>
+                  + {winAmount.toLocaleString()} <span className="opacity-50">$</span>
                 </div>
               </div>
             ) : (

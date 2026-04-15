@@ -11,7 +11,7 @@ interface RoundResult {
   totalMultiplier: number;
   hasLostMatch: boolean;
   matchesFound: number;
-  result: 'win' | 'lost';
+  result: 'win' | 'lost' | 'draw';
   resultCategory: MultiplierCategory;
   winAmount: number;
   newBalance: number;
@@ -43,7 +43,22 @@ export const calculateRoundResult = (
   const hasLostMatch = gameResults.some((r) => r.isLost);
   const totalMultiplier = gameResults.reduce((acc, r) => acc + r.multiplier, 0);
 
-  const isLost = hasLostMatch || matchesFound === 0;
+  const isLost = hasLostMatch;
+  const isDraw = matchesFound === 0;
+
+  if (isDraw) {
+    return {
+      updatedTop,
+      updatedBottom,
+      totalMultiplier,
+      hasLostMatch,
+      matchesFound,
+      result: 'draw',
+      resultCategory: 'draw',
+      winAmount: 0,
+      newBalance: currentBalance + betAmount,
+    };
+  }
 
   if (isLost) {
     return {

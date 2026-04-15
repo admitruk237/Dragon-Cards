@@ -1,4 +1,4 @@
-export type MultiplierCategory = 'low' | 'win' | 'high' | 'lost';
+export type MultiplierCategory = 'low' | 'win' | 'high' | 'lost' | 'draw';
 
 export const getMultiplierCategory = (val: number | 'LOST'): MultiplierCategory => {
   if (val === 'LOST') return 'lost';
@@ -12,6 +12,7 @@ const TITLES: Record<MultiplierCategory, string> = {
   win: 'Big Win!',
   low: 'Small Win',
   lost: 'Lost',
+  draw: 'No win, no loss',
 };
 
 export const getMultiplierTitle = (category: MultiplierCategory): string => TITLES[category] || '';

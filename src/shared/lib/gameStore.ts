@@ -15,7 +15,7 @@ interface GameStore {
   gamePhase: GamePhase;
   topCards: Card[];
   bottomCards: Card[];
-  result: 'win' | 'lost' | null;
+  result: 'win' | 'lost' | 'draw' | null;
   resultCategory: MultiplierCategory | null;
   winAmount: number;
   isSoundOn: boolean;

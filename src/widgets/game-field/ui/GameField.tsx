@@ -18,18 +18,34 @@ import {
 } from '@dnd-kit/sortable';
 import { SortableCard } from './SortableCard';
 import { Badge } from '@/components/ui/badge';
-import { GamePhaseControls } from './GamePhaseControls';
+import { useState } from 'react';
 
 export const GameField = () => {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const { topCards, bottomCards, risk, moveBottomCard } = useGameStore();
   const config = RISK_CONFIG[risk];
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const handleCardClick = (id: string) => {
+    if (selectedId === null) {
+      setSelectedId(id);
+    } else if (selectedId === id) {
+      setSelectedId(null);
+    } else {
+      moveBottomCard(selectedId, id);
+      setSelectedId(null);
+    }
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -37,7 +53,7 @@ export const GameField = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 md:gap-10 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
+    <div className="flex flex-col items-center gap-6 md:gap-24 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
       <div className="flex flex-col gap-4 md:gap-6 items-center">
         <div className="flex gap-2 md:gap-4">
           {topCards.map((card) => (
@@ -52,7 +68,6 @@ export const GameField = () => {
           ))}
         </div>
       </div>
-      <GamePhaseControls />
       <div className="flex flex-col gap-6 items-center">
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext
@@ -67,6 +82,8 @@ export const GameField = () => {
                 return (
                   <div key={card.id} className="flex flex-col items-center gap-2 md:gap-5">
                     <SortableCard
+                      onClick={() => handleCardClick(card.id)}
+                      isSelected={selectedId === card.id}
                       id={card.id}
                       dragonType={card.dragonType}
                       type="bottom"
