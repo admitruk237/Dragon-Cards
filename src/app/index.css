@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    'Geist Mono', 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+
+  --color-neon-cyan: #00f2ff;
+  --color-neon-pink: #ff00d4;
+  --color-dragon-gold: #ffcc00;
+
+  --color-background: #0a0e16;
+  --color-foreground: #f7f7ff;
+
+  --color-card: rgba(255, 255, 255, 0.03);
+  --color-card-foreground: #f7f7ff;
+
+  --color-popover: #0a0b10;
+  --color-popover-foreground: #f7f7ff;
+
+  --color-primary: #00f2ff;
+  --color-primary-foreground: #06070a;
+
+  --color-secondary: #ff00d4;
+  --color-secondary-foreground: #f7f7ff;
+
+  --color-muted: rgba(255, 255, 255, 0.05);
+  --color-muted-foreground: rgba(247, 247, 255, 0.6);
+
+  --color-accent: rgba(255, 255, 255, 0.1);
+  --color-accent-foreground: #f7f7ff;
+
+  --color-destructive: #ff1744;
+  --color-destructive-foreground: #f7f7ff;
+
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-input: rgba(255, 255, 255, 0.05);
+  --color-ring: #00f2ff;
+
+  --radius-lg: 1.25rem;
+  --radius-md: 0.75rem;
+  --radius-sm: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .neon-glow-cyan {
+    box-shadow:
+      0 0 15px rgba(0, 242, 255, 0.3),
+      0 0 30px rgba(0, 242, 255, 0.1);
+  }
+
+  .neon-glow-pink {
+    box-shadow:
+      0 0 15px rgba(255, 0, 212, 0.3),
+      0 0 30px rgba(255, 0, 212, 0.1);
+  }
+
+  .neon-text-cyan {
+    text-shadow:
+      0 0 5px rgba(0, 242, 255, 0.5),
+      0 0 10px rgba(0, 242, 255, 0.3);
+  }
+
+  .grainy-bg {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    pointer-events: none;
+  }
+}

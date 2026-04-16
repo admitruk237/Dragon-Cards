@@ -1,6 +1,6 @@
-import { useGameStore } from '@/shared/lib/gameStore';
-import { DragonCard } from '@/entities/card/ui/DragonCard';
-import { getMultiplierCategory, getMultiplierVariant } from '@/entities/risk/lib/multiplierUtils';
+import { useGameStore } from '@/app/store/game-store';
+import { DragonCard } from '@/entities/card';
+import { getMultiplierCategory, getMultiplierVariant } from '@/entities/risk';
 import {
   closestCenter,
   DndContext,
@@ -16,15 +16,25 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 import { SortableCard } from './SortableCard';
-import { Badge } from '@/components/ui/badge';
-import { useState } from 'react';
-import { useAudio } from '@/shared/lib/hooks/useAudio';
-import { SoundToggle } from '@/features/toggle-sound/SoundToggle';
+import { Badge } from '@/shared/ui';
+import { useCallback, useMemo, useState } from 'react';
+import { useAudio } from '@/features/toggle-sound';
+import { SoundToggle } from '@/features/toggle-sound';
+import { useShallow } from 'zustand/react/shallow';
 
 export const GameField = () => {
   const { playSound } = useAudio();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const { topCards, bottomCards, config, moveBottomCard } = useGameStore();
+
+  const { topCards, bottomCards, config, moveBottomCard, gamePhase } = useGameStore(
+    useShallow((state) => ({
+      topCards: state.topCards,
+      bottomCards: state.bottomCards,
+      config: state.config,
+      moveBottomCard: state.moveBottomCard,
+      gamePhase: state.gamePhase,
+    }))
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -37,26 +47,32 @@ export const GameField = () => {
     })
   );
 
-  const handleCardClick = (id: string) => {
-    playSound('click');
-    if (selectedId === null) {
-      setSelectedId(id);
-    } else if (selectedId === id) {
-      setSelectedId(null);
-    } else {
-      moveBottomCard(selectedId, id);
-      setSelectedId(null);
-    }
-  };
+  const handleCardClick = useCallback(
+    (id: string) => {
+      playSound('click');
+      setSelectedId((prev) => {
+        if (prev === null) return id;
+        if (prev === id) return null;
+        moveBottomCard(prev, id);
+        return null;
+      });
+    },
+    [playSound, moveBottomCard]
+  );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    moveBottomCard(String(active.id), over ? String(over.id) : undefined);
-    playSound('flip');
-  };
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      moveBottomCard(String(active.id), over ? String(over.id) : undefined);
+      playSound('flip');
+    },
+    [moveBottomCard, playSound]
+  );
+
+  const bottomCardsList = useMemo(() => bottomCards.map((c) => c.id), [bottomCards]);
 
   return (
-    <div className="flex relative h-full flex-col items-center gap-6 md:gap-24 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
+    <div className="flex relative h-full flex-col items-center gap-24 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
       <SoundToggle />
       <div className="flex flex-col gap-4 md:gap-6 items-center mt-10 md:mt-20">
         <div className="flex gap-2 md:gap-4">
@@ -64,23 +80,20 @@ export const GameField = () => {
             <DragonCard
               key={card.id}
               type="top"
-              id={card.id}
               dragonType={card.dragonType}
               isRevealed={card.isRevealed}
               resultStatus={card.resultStatus}
+              gamePhase={gamePhase}
             />
           ))}
         </div>
       </div>
       <div className="flex flex-col gap-6 items-center">
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext
-            items={bottomCards.map((c) => c.id)}
-            strategy={horizontalListSortingStrategy}
-          >
+          <SortableContext items={bottomCardsList} strategy={horizontalListSortingStrategy}>
             <div className="flex gap-2 md:gap-4">
               {bottomCards.map((card, i) => {
-                const multiplier = config.multipliers_layout[i];
+                const multiplier = config.multipliersLayout[i];
                 const category = getMultiplierCategory(multiplier);
 
                 return (
@@ -92,18 +105,10 @@ export const GameField = () => {
                       dragonType={card.dragonType}
                       type="bottom"
                       resultStatus={card.resultStatus}
+                      gamePhase={gamePhase}
                     />
 
-                    <Badge
-                      variant={
-                        getMultiplierVariant(category) as
-                          | 'win'
-                          | 'low'
-                          | 'high'
-                          | 'lost'
-                          | 'default'
-                      }
-                    >
+                    <Badge variant={getMultiplierVariant(category)}>
                       {multiplier}
                       {typeof multiplier === 'number' ? 'x' : ''}
                     </Badge>

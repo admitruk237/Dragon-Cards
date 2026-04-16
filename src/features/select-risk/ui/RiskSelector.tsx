@@ -1,13 +1,23 @@
-import { useGameStore } from '@/shared/lib/gameStore';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { RISK_CONFIG } from '@/entities/risk/model/risk.config';
-import { type RiskLevel } from '@/shared/types/game.types';
+import { useGameStore } from '@/app/store/game-store';
+import { ToggleGroup, ToggleGroupItem } from '@/shared/ui';
+import { RISK_CONFIG } from '@/entities/risk';
+import { type RiskLevel } from '@/shared/types';
+import { useShallow } from 'zustand/react/shallow';
 
+const RISK_LEVELS: RiskLevel[] = ['low', 'medium', 'high', 'classic'];
 export const RiskSelector = () => {
-  const { risk, setRisk, isLocked } = useGameStore();
+  const { risk, setRisk, isLocked } = useGameStore(
+    useShallow((state) => ({
+      risk: state.risk,
+      setRisk: state.setRisk,
+      isLocked: state.isLocked,
+    }))
+  );
 
   const handleRiskChange = (value: string) => {
-    if (value) setRisk(value as RiskLevel);
+    if (RISK_LEVELS.includes(value as RiskLevel)) {
+      setRisk(value as RiskLevel);
+    }
   };
 
   return (

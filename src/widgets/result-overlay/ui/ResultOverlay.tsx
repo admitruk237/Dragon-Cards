@@ -1,13 +1,22 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useGameStore } from '@/shared/lib/gameStore';
+import { useGameStore } from '@/app/store/game-store';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { getMultiplierTitle } from '@/entities/risk/lib/multiplierUtils';
-import { GamePhase } from '@/shared/types/game.types';
-import { useAudio } from '@/shared/lib/hooks/useAudio';
+import { Button } from '@/shared/ui';
+import { getMultiplierTitle } from '@/entities/risk';
+import { GamePhase } from '@/shared/types';
+import { useAudio } from '@/features/toggle-sound';
+import { useShallow } from 'zustand/react/shallow';
 
 export const ResultOverlay = () => {
-  const { result, resultCategory, winAmount, gamePhase, resetRound } = useGameStore();
+  const { result, resultCategory, winAmount, gamePhase, resetRound } = useGameStore(
+    useShallow((state) => ({
+      result: state.result,
+      resultCategory: state.resultCategory,
+      winAmount: state.winAmount,
+      gamePhase: state.gamePhase,
+      resetRound: state.resetRound,
+    }))
+  );
   const [show, setShow] = useState(false);
   const { playSound } = useAudio();
 

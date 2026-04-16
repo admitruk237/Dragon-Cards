@@ -1,9 +1,18 @@
-import { Input } from '@/components/ui/input';
-import { useGameStore } from '@/shared/lib/gameStore';
-import { Button } from '@/components/ui/button';
+import { Button, Input } from '@/shared/ui';
+import { useGameStore } from '@/app/store/game-store';
+import { useShallow } from 'zustand/react/shallow';
 
 export const BetInput = () => {
-  const { betAmount, setBetAmount, isLocked, halfBet, doubleBet, maxBet } = useGameStore();
+  const { betAmount, setBetAmount, isLocked, halfBet, doubleBet, maxBet } = useGameStore(
+    useShallow((state) => ({
+      betAmount: state.betAmount,
+      setBetAmount: state.setBetAmount,
+      isLocked: state.isLocked,
+      halfBet: state.halfBet,
+      doubleBet: state.doubleBet,
+      maxBet: state.maxBet,
+    }))
+  );
 
   return (
     <div className="flex flex-col gap-1.5 w-full">

@@ -5,7 +5,7 @@
     "target": "ESNext",
     "lib": ["ESNext"],
     "module": "esnext",
-    "types": ["node"],
+    "types": ["node", "vite"],
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -20,5 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "custom.d.ts"]
 }

@@ -1,16 +1,18 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { DragonCard } from '@/entities/card/ui/DragonCard';
-import { cn } from '@/lib/utils';
+import { DragonCard } from '@/entities/card';
+import { cn } from '@/shared/lib/cn';
+import type { DragonType, GamePhase, ResultStatus } from '@/shared/types';
 
 interface Props {
   id: string;
   isRevealed?: boolean;
-  resultStatus?: 'win' | 'lost' | null;
-  dragonType?: string;
+  resultStatus?: ResultStatus;
+  dragonType?: DragonType;
   type: 'top' | 'bottom';
   onClick?: () => void;
   isSelected?: boolean;
+  gamePhase: GamePhase;
 }
 
 export const SortableCard = (props: Props) => {
