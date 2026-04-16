@@ -19,8 +19,11 @@ import {
 import { SortableCard } from './SortableCard';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
+import { useAudio } from '@/shared/lib/hooks/useAudio';
+import { SoundToggle } from '@/features/toggle-sound/SoundToggle';
 
 export const GameField = () => {
+  const { playSound } = useAudio();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { topCards, bottomCards, risk, moveBottomCard } = useGameStore();
   const config = RISK_CONFIG[risk];
@@ -37,6 +40,7 @@ export const GameField = () => {
   );
 
   const handleCardClick = (id: string) => {
+    playSound('click');
     if (selectedId === null) {
       setSelectedId(id);
     } else if (selectedId === id) {
@@ -50,11 +54,13 @@ export const GameField = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     moveBottomCard(String(active.id), over ? String(over.id) : undefined);
+    playSound('flip');
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 md:gap-24 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
-      <div className="flex flex-col gap-4 md:gap-6 items-center">
+    <div className="flex relative h-full flex-col items-center gap-6 md:gap-24 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
+      <SoundToggle />
+      <div className="flex flex-col gap-4 md:gap-6 items-center mt-10 md:mt-20">
         <div className="flex gap-2 md:gap-4">
           {topCards.map((card) => (
             <DragonCard
@@ -90,7 +96,16 @@ export const GameField = () => {
                       resultStatus={card.resultStatus}
                     />
 
-                    <Badge variant={getMultiplierVariant(category) as any}>
+                    <Badge
+                      variant={
+                        getMultiplierVariant(category) as
+                          | 'win'
+                          | 'low'
+                          | 'high'
+                          | 'lost'
+                          | 'default'
+                      }
+                    >
                       {multiplier}
                       {typeof multiplier === 'number' ? 'x' : ''}
                     </Badge>

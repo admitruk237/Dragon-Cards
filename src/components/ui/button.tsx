@@ -3,6 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from 'radix-ui';
 
 import { cn } from '@/lib/utils';
+import { type SoundKey, useAudio } from '@/shared/lib/hooks/useAudio';
 
 const buttonVariants = cva(
   'cursor-pointer group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*="size-"])]:size-4',
@@ -12,7 +13,7 @@ const buttonVariants = cva(
         default:
           'w-full bg-[#025cc1] p-5 cursor-pointer text-white font-black text-sm rounded-md hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_30px_rgba(0,242,255,0.3)] hover:shadow-[0_0_20px_rgba(0,242,255,0.5)] disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed group/btn overflow-hidden relative',
         outline:
-          'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+          'bg-[#141a26] p-4 h-auto aspect-square rounded-md text-base text-white/40 hover:bg-[#1c2331] hover:text-white/80 transition-all border border-white/5 active:scale-95',
         secondary:
           'bg-white text-black font-black uppercase text-sm rounded-full hover:bg-neon-cyan hover:scale-105 transition-all shadow-xl',
         ghost:
@@ -27,7 +28,7 @@ const buttonVariants = cva(
           'h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
         xs: 'h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*="size-"])]:size-3',
         sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: 'h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
+        lg: 'h-9 gap-1.5 p-4 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
         pill: 'h-auto px-12 py-3',
         icon: 'size-8',
         'icon-xs':
@@ -49,15 +50,25 @@ function Button({
   variant = 'default',
   size = 'default',
   asChild = false,
+  soundType = 'click',
+  onClick,
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
+    soundType?: SoundKey;
   }) {
+  const { playSound } = useAudio();
   const Comp = asChild ? Slot.Root : 'button';
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (soundType) playSound(soundType);
+    if (onClick) onClick(e);
+  };
 
   return (
     <Comp
+      onClick={handleClick}
       data-slot="button"
       data-variant={variant}
       data-size={size}

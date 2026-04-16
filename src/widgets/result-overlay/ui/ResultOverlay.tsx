@@ -4,18 +4,27 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getMultiplierTitle } from '@/entities/risk/lib/multiplierUtils';
 import { GamePhase } from '@/shared/types/game.types';
+import { useAudio } from '@/shared/lib/hooks/useAudio';
 
 export const ResultOverlay = () => {
   const { result, resultCategory, winAmount, gamePhase, resetRound } = useGameStore();
   const [show, setShow] = useState(false);
+  const { playSound } = useAudio();
 
   useEffect(() => {
     if (gamePhase === GamePhase.RESULT) {
       const timer = setTimeout(() => setShow(true), 1500);
+      if (result === 'win') {
+        playSound('win');
+      } else if (result === 'draw') {
+        playSound('draw');
+      } else {
+        playSound('lose');
+      }
       return () => clearTimeout(timer);
     }
     setShow(false);
-  }, [gamePhase]);
+  }, [gamePhase, result]);
 
   const title = resultCategory ? getMultiplierTitle(resultCategory) : '';
 

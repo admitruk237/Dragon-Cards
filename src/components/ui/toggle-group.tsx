@@ -4,6 +4,7 @@ import { ToggleGroup as ToggleGroupPrimitive } from 'radix-ui';
 
 import { cn } from '@/lib/utils';
 import { toggleVariants } from '@/components/ui/toggle';
+import { type SoundKey, useAudio } from '@/shared/lib/hooks/useAudio';
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants> & {
@@ -56,9 +57,20 @@ function ToggleGroupItem({
   children,
   variant = 'default',
   size = 'default',
+  soundType = 'click',
+  onClick,
   ...props
-}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> & VariantProps<typeof toggleVariants>) {
+}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> &
+  VariantProps<typeof toggleVariants> & {
+    soundType?: SoundKey;
+  }) {
   const context = React.useContext(ToggleGroupContext);
+  const { playSound } = useAudio();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (soundType) playSound(soundType);
+    if (onClick) onClick(e);
+  };
 
   return (
     <ToggleGroupPrimitive.Item
@@ -74,6 +86,7 @@ function ToggleGroupItem({
         }),
         className
       )}
+      onClick={handleClick}
       {...props}
     >
       {children}

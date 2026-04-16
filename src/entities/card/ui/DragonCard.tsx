@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useGameStore } from '@/shared/lib/gameStore';
 import { cn } from '@/lib/utils';
 import { GamePhase } from '@/shared/types/game.types';
+import { useAudio } from '@/shared/lib/hooks/useAudio';
+import { useEffect } from 'react';
 
 const CARD_BACK = '/assets/cards/card_back.png';
 
@@ -35,6 +37,14 @@ export const DragonCard = ({
   onClick,
 }: Props) => {
   const { gamePhase } = useGameStore();
+
+  const { playSound } = useAudio();
+
+  useEffect(() => {
+    if (isRevealed) {
+      playSound('flip');
+    }
+  }, [isRevealed]);
 
   const showFront = type === 'bottom' ? true : isRevealed;
   const currentImage = showFront ? DRAGON_IMAGES[dragonType || 'fire'] : CARD_BACK;

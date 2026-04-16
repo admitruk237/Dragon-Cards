@@ -27,7 +27,8 @@ export const SortableCard = (props: Props) => {
       {...listeners}
       onClick={onClick}
       className={cn(
-        'relative rounded-2xl transition-all duration-200 cursor-pointer',
+        'relative rounded-2xl cursor-pointer',
+        !isDragging && 'transition-all duration-200',
         isDragging ? 'opacity-30' : 'opacity-100'
       )}
     >
