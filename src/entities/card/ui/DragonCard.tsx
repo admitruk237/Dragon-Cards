@@ -58,7 +58,7 @@ export const DragonCard = memo(
     return (
       <div
         className={cn(
-          'relative w-[65px] h-[120px] xl:w-[110px] lg:w-[90px] md:w-[100px] sm:w-[80px]  xl:h-[180px] lg:h-[160px] md:h-[180px] sm:h-[140px]  group transition-all duration-300',
+          'relative w-[65px] h-[120px] xl:w-[110px] lg:w-[85px] md:w-[100px] sm:w-[80px]  xl:h-[180px] lg:h-[160px] md:h-[180px] sm:h-[140px]  group transition-all duration-300',
           type === 'bottom' && gamePhase === GamePhase.ARRANGING
             ? 'cursor-grab active:cursor-grabbing hover:-translate-y-2'
             : 'cursor-default',

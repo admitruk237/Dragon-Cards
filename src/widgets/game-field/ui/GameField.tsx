@@ -18,8 +18,7 @@ import {
 import { SortableCard } from './SortableCard';
 import { Badge } from '@/shared/ui';
 import { useCallback, useMemo, useState } from 'react';
-import { useAudio } from '@/features/toggle-sound';
-import { SoundToggle } from '@/features/toggle-sound';
+import { SoundToggle, useAudio } from '@/features/toggle-sound';
 import { useShallow } from 'zustand/react/shallow';
 
 export const GameField = () => {
@@ -72,7 +71,7 @@ export const GameField = () => {
   const bottomCardsList = useMemo(() => bottomCards.map((c) => c.id), [bottomCards]);
 
   return (
-    <div className="flex relative h-full flex-col items-center gap-24 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
+    <div className="flex relative h-full flex-col items-center gap-15 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
       <SoundToggle />
       <div className="flex flex-col gap-4 md:gap-6 items-center mt-10 md:mt-20">
         <div className="flex gap-2 md:gap-4">
