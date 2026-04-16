@@ -1,12 +1,10 @@
 import { useGameStore } from '@/shared/lib/gameStore';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { RISK_CONFIG } from '@/entities/risk/model/risk.config';
-import { GamePhase, type RiskLevel } from '@/shared/types/game.types';
+import { type RiskLevel } from '@/shared/types/game.types';
 
 export const RiskSelector = () => {
-  const { risk, setRisk, gamePhase } = useGameStore();
-
-  const isLocked = gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT;
+  const { risk, setRisk, isLocked } = useGameStore();
 
   const handleRiskChange = (value: string) => {
     if (value) setRisk(value as RiskLevel);

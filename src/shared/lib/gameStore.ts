@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { type Card, GamePhase, type RiskLevel } from '@/shared/types/game.types';
 import { generateCards } from './generateCards';
-import { RISK_CONFIG } from '@/entities/risk/model/risk.config';
+import { RISK_CONFIG, type RiskConfig } from '@/entities/risk/model/risk.config';
 import { type MultiplierCategory } from '@/entities/risk/lib/multiplierUtils';
 import { clampBet } from './betUtils';
 import { calculateRoundResult } from './roundUtils';
@@ -19,6 +19,8 @@ interface GameStore {
   resultCategory: MultiplierCategory | null;
   winAmount: number;
   isSoundOn: boolean;
+  readonly config: RiskConfig;
+  readonly isLocked: boolean;
   setBetAmount: (amount: number) => void;
   setRisk: (risk: RiskLevel) => void;
   placeBet: () => void;
@@ -48,6 +50,15 @@ export const useGameStore = create<GameStore>()(
       resultCategory: null,
       winAmount: 0,
       isSoundOn: true,
+
+      get config() {
+        return RISK_CONFIG[get().risk];
+      },
+
+      get isLocked() {
+        const { gamePhase } = get();
+        return gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT;
+      },
 
       setBetAmount: (amount) => {
         const { balance, gamePhase } = get();
@@ -164,9 +175,11 @@ export const useGameStore = create<GameStore>()(
     {
       name: 'dragon-cards-storage',
       storage: createJSONStorage(() => localStorage),
+      merge: (persistedState, currentState) => Object.assign(currentState, persistedState),
       partialize: (state) => ({
         balance: state.balance,
         isSoundOn: state.isSoundOn,
+        risk: state.risk,
       }),
     }
   )

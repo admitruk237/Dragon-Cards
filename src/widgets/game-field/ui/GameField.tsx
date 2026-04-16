@@ -1,6 +1,5 @@
 import { useGameStore } from '@/shared/lib/gameStore';
 import { DragonCard } from '@/entities/card/ui/DragonCard';
-import { RISK_CONFIG } from '@/entities/risk/model/risk.config';
 import { getMultiplierCategory, getMultiplierVariant } from '@/entities/risk/lib/multiplierUtils';
 import {
   closestCenter,
@@ -25,8 +24,7 @@ import { SoundToggle } from '@/features/toggle-sound/SoundToggle';
 export const GameField = () => {
   const { playSound } = useAudio();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const { topCards, bottomCards, risk, moveBottomCard } = useGameStore();
-  const config = RISK_CONFIG[risk];
+  const { topCards, bottomCards, config, moveBottomCard } = useGameStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

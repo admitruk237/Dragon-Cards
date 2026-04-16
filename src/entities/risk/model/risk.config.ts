@@ -1,6 +1,6 @@
 import type { RiskLevel } from '@/shared/types/game.types';
 
-interface RiskConfig {
+export interface RiskConfig {
   lostCount: number;
   multipliers_layout: (number | 'LOST')[];
 }

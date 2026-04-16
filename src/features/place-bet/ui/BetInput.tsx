@@ -3,9 +3,7 @@ import { useGameStore } from '@/shared/lib/gameStore';
 import { Button } from '@/components/ui/button';
 
 export const BetInput = () => {
-  const { betAmount, setBetAmount, gamePhase, halfBet, doubleBet, maxBet } = useGameStore();
-
-  const isLocked = gamePhase !== 'idle' && gamePhase !== 'result';
+  const { betAmount, setBetAmount, isLocked, halfBet, doubleBet, maxBet } = useGameStore();
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
