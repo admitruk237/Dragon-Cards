@@ -58,7 +58,7 @@ export const DragonCard = memo(
     return (
       <div
         className={cn(
-          'relative w-[65px] h-[120px] xl:w-[110px] lg:w-[85px] md:w-[100px] sm:w-[80px]  xl:h-[180px] lg:h-[160px] md:h-[180px] sm:h-[140px]  group transition-all duration-300',
+          'relative w-[70px] h-[120px] max-[500px]:w-[55px] max-[500px]:h-[95px] md:w-[90px] md:h-[155px] xl:w-[110px] xl:h-[190px] group transition-all duration-300',
           type === 'bottom' && gamePhase === GamePhase.ARRANGING
             ? 'cursor-grab active:cursor-grabbing hover:-translate-y-2'
             : 'cursor-default',
@@ -94,7 +94,7 @@ export const DragonCard = memo(
                   resultStatus === 'lost' && 'bg-red-500/10'
                 )}
               >
-                <span className="relative z-20 text-[8px] md:text-[10px] font-black uppercase text-white/50 tracking-[0.2em] text-center mb-0.5 md:mb-1">
+                <span className="relative z-20 text-[8px] max-[500px]:text-[6px] md:text-[10px] font-black uppercase text-white/50 tracking-[0.2em] max-[500px]:tracking-[0.1em] text-center mb-0.5 md:mb-1">
                   {dragonType}
                 </span>
               </div>

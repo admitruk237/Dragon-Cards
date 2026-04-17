@@ -71,10 +71,10 @@ export const GameField = () => {
   const bottomCardsList = useMemo(() => bottomCards.map((c) => c.id), [bottomCards]);
 
   return (
-    <div className="flex relative h-full flex-col items-center gap-15 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
+    <div className="flex relative h-full flex-col items-center gap-12 max-[500px]:gap-8 md:gap-20 xl:gap-28 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
       <SoundToggle />
-      <div className="flex flex-col gap-4 md:gap-6 items-center mt-10 md:mt-20">
-        <div className="flex gap-2 md:gap-4">
+      <div className="flex flex-col items-center mt-16 max-[500px]:mt-12 md:mt-10 xl:mt-14">
+        <div className="flex gap-2 max-[500px]:gap-1 md:gap-4 xl:gap-8">
           {topCards.map((card) => (
             <DragonCard
               key={card.id}
@@ -90,13 +90,16 @@ export const GameField = () => {
       <div className="flex flex-col gap-6 items-center">
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={bottomCardsList} strategy={horizontalListSortingStrategy}>
-            <div className="flex gap-2 md:gap-4">
+            <div className="flex gap-2 max-[500px]:gap-1 md:gap-4 xl:gap-8">
               {bottomCards.map((card, i) => {
                 const multiplier = config.multipliersLayout[i];
                 const category = getMultiplierCategory(multiplier);
 
                 return (
-                  <div key={card.id} className="flex flex-col items-center gap-2 md:gap-5">
+                  <div
+                    key={card.id}
+                    className="flex flex-col items-center gap-1.5 max-[500px]:gap-0.5 md:gap-3 xl:gap-5"
+                  >
                     <SortableCard
                       onClick={() => handleCardClick(card.id)}
                       isSelected={selectedId === card.id}
@@ -107,7 +110,10 @@ export const GameField = () => {
                       gamePhase={gamePhase}
                     />
 
-                    <Badge variant={getMultiplierVariant(category)}>
+                    <Badge
+                      variant={getMultiplierVariant(category)}
+                      className="px-2 py-0.5 text-[8px] max-[500px]:px-1 max-[500px]:text-[6px] md:px-3 md:py-1 md:text-[10px] xl:px-4 xl:py-1.5 xl:text-[11px]"
+                    >
                       {multiplier}
                       {typeof multiplier === 'number' ? 'x' : ''}
                     </Badge>

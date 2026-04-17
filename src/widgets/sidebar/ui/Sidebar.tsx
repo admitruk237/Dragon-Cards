@@ -12,15 +12,15 @@ interface Props {
 
 export const Sidebar = ({ balance, placeBet, gamePhase, confirmArrangement }: Props) => {
   return (
-    <aside className="w-full lg:w-[350px] h-auto lg:h-full flex flex-col px-6 py-8 lg:px-8 lg:py-10 gap-6 lg:gap-10 border-b lg:border-b-0 lg:border-r border-white/5 bg-[#141a26]/80 lg:bg-[#141a26]">
-      <div className="flex flex-col gap-6 lg:gap-10 flex-1">
+    <aside className="w-full lg:w-[350px] h-auto lg:h-full flex flex-col px-6 max-[500px]:px-4 py-8 max-[500px]:py-4 lg:px-8 lg:py-10 gap-6 max-[500px]:gap-4 lg:gap-10 border-b lg:border-b-0 lg:border-r border-white/5 bg-[#141a26]/80 lg:bg-[#141a26]">
+      <div className="flex flex-col gap-6 max-[500px]:gap-4 lg:gap-10 flex-1">
         <span className="sr-only">Sidebar content</span>
         <BetInput />
         <RiskSelector />
 
         <Button
           onClick={gamePhase === GamePhase.ARRANGING ? confirmArrangement : placeBet}
-          className="lg:mt-0"
+          className="lg:mt-0 max-[500px]:p-3 max-[500px]:text-xs"
         >
           {gamePhase === GamePhase.ARRANGING ? 'Confirm & Reveal' : 'Place Bet'}
         </Button>

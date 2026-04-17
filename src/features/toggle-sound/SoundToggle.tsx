@@ -6,7 +6,7 @@ export const SoundToggle = () => {
   const isSoundOn = useGameStore((state) => state.isSoundOn);
   const toggleSound = useGameStore((state) => state.toggleSound);
   return (
-    <div className="absolute top-0 left-0 md:top-3 md:left-4">
+    <div className="absolute top-0 left-0 md:top-3 md:left-4 max-[500px]:scale-75 max-[500px]:origin-top-left">
       <Button variant="outline" size="lg" onClick={toggleSound}>
         {isSoundOn ? <Volume2 /> : <VolumeOff />}
       </Button>

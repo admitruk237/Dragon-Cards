@@ -16,11 +16,11 @@ export const BetInput = () => {
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
-      <div className="flex flex-col gap-2 px-0.5">
-        <span className="text-sm font-bold text-white uppercase tracking-[0.15em]">Bet Amount</span>
+      <div className="flex flex-col gap-2 max-[500px]:gap-1 px-0.5">
+        <span className="text-sm max-[500px]:text-xs font-bold text-white uppercase tracking-[0.15em]">Bet Amount</span>
         <div className="flex justify-between">
-          <span className="text-sm text-white/30">Max: 1000.00</span>
-          <span className="text-sm  text-white/30">$</span>
+          <span className="text-sm max-[500px]:text-xs text-white/30">Max: 1000.00</span>
+          <span className="text-sm max-[500px]:text-xs text-white/30">$</span>
         </div>
       </div>
 
@@ -31,7 +31,7 @@ export const BetInput = () => {
           onChange={(e) => setBetAmount(Number(e.target.value))}
           placeholder="0.00"
           disabled={isLocked}
-          className="h-11 border-none bg-transparent font-mono text-sm text-white pl-4 pr-32 focus-visible:ring-0 placeholder:text-white/10"
+          className="h-11 max-[500px]:h-9 border-none bg-transparent font-mono text-sm px-4 max-[500px]:px-2 text-white pl-4 pr-32 focus-visible:ring-0 placeholder:text-white/10"
         />
 
         <div className="absolute right-1.5 flex items-center gap-1">
