@@ -1,5 +1,5 @@
 import { GameField } from '@/widgets/game-field';
-import bgImage from '@/assets/images/dragon_cave_bg.png';
+import bgImage from '@/assets/images/dragon_cave_bg.webp';
 
 export const GameView = () => {
   return (

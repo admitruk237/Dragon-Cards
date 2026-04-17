@@ -4,15 +4,15 @@ import { type DragonType, GamePhase, type ResultStatus } from '@/shared/types';
 import { useAudio } from '@/features/toggle-sound';
 import { memo, useEffect } from 'react';
 
-const CARD_BACK = '/assets/cards/card_back.png';
+const CARD_BACK = '/assets/cards/card_back.webp';
 
 const DRAGON_IMAGES: Record<DragonType, string> = {
-  fire: '/assets/cards/fire.png',
-  ice: '/assets/cards/ice.png',
-  storm: '/assets/cards/storm.png',
-  earth: '/assets/cards/earth.png',
-  shadow: '/assets/cards/shadow.png',
-  wind: '/assets/cards/wind.png',
+  fire: '/assets/cards/fire.webp',
+  ice: '/assets/cards/ice.webp',
+  storm: '/assets/cards/storm.webp',
+  earth: '/assets/cards/earth.webp',
+  shadow: '/assets/cards/shadow.webp',
+  wind: '/assets/cards/wind.webp',
 };
 
 interface Props {
