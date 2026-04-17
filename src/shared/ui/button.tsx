@@ -11,13 +11,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'w-full bg-[#025cc1] p-5 cursor-pointer text-white font-black text-sm rounded-md hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_30px_rgba(0,242,255,0.3)] hover:shadow-[0_0_20px_rgba(0,242,255,0.5)] disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed group/btn overflow-hidden relative',
+          'w-full bg-action-blue p-5 cursor-pointer text-white font-black text-sm rounded-md hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_30px_rgba(0,242,255,0.3)] hover:shadow-[0_0_20px_rgba(0,242,255,0.5)] disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed group/btn overflow-hidden relative',
         outline:
-          'bg-[#141a26] p-4 h-auto aspect-square rounded-md text-base text-white/40 hover:bg-[#1c2331] hover:text-white/80 transition-all border border-white/5 active:scale-95',
+          'bg-surface-panel p-4 h-auto aspect-square rounded-md text-base text-white/40 hover:bg-surface-hover hover:text-white/80 transition-all border border-white/5 active:scale-95',
         secondary:
           'bg-white text-black font-black uppercase text-sm rounded-full hover:bg-neon-cyan hover:scale-105 transition-all shadow-xl',
         ghost:
-          'hover:bg-muted  p-3  bg-[#1b2030] hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
+          'hover:bg-muted p-3 bg-surface-highlight hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
         destructive:
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
         link: 'text-primary underline-offset-4 hover:underline',

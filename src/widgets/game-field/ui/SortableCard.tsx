@@ -2,7 +2,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DragonCard } from '@/entities/card';
 import { cn } from '@/shared/lib/cn';
-import type { DragonType, GamePhase, ResultStatus } from '@/shared/types';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { type DragonType, GamePhase, type ResultStatus } from '@/shared/types';
 
 interface Props {
   id: string;
@@ -16,12 +17,12 @@ interface Props {
 }
 
 export const SortableCard = (props: Props) => {
-  const { isSelected, onClick, ...rest } = props;
+  const { isSelected, onClick, gamePhase, ...rest } = props;
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: props.id,
   });
 
-  return (
+  const cardContent = (
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
@@ -29,12 +30,13 @@ export const SortableCard = (props: Props) => {
       {...listeners}
       onClick={onClick}
       className={cn(
-        'relative rounded-2xl cursor-pointer',
+        'relative rounded-2xl cursor-pointer touch-none',
         !isDragging && 'transition-all duration-200',
         isDragging ? 'opacity-30' : 'opacity-100'
       )}
     >
       <DragonCard
+        gamePhase={gamePhase}
         {...rest}
         className={cn(
           isSelected ? 'ring-2 rounded-2xl ring-yellow-400 scale-105 shadow-lg z-50' : 'ring-0'
@@ -42,4 +44,20 @@ export const SortableCard = (props: Props) => {
       />
     </div>
   );
+
+  if (gamePhase !== GamePhase.ARRANGING) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{cardContent}</TooltipTrigger>
+        <TooltipContent
+          side="top"
+          className="bg-green-500/90 text-white border-red-500/20 px-3 py-1.5 font-bold uppercase tracking-wider text-[10px]"
+        >
+          Please place a bet!
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return cardContent;
 };

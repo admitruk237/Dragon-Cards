@@ -39,7 +39,7 @@ export const RiskSelector = () => {
           <ToggleGroupItem
             key={level}
             value={level}
-            className="h-9 max-[500px]:h-7 bg-[#1b2030] px-0 text-[10px] max-[500px]:text-[8px] font-black uppercase tracking-wider rounded-lg border-none data-[state=on]:bg-neon-cyan/10 data-[state=on]:text-neon-cyan data-[state=on]:shadow-[inset_0_0_10px_rgba(0,242,255,0.1)] hover:bg-white/5 transition-all"
+            className="h-9 max-[500px]:h-7 bg-surface-highlight px-0 text-[10px] max-[500px]:text-[8px] font-black uppercase tracking-wider rounded-lg border-none data-[state=on]:bg-neon-cyan/10 data-[state=on]:text-neon-cyan data-[state=on]:shadow-[inset_0_0_10px_rgba(0,242,255,0.1)] hover:bg-white/5 transition-all"
           >
             {level}
           </ToggleGroupItem>

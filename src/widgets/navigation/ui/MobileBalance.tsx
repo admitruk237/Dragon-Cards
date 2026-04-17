@@ -1,10 +1,15 @@
-interface Props {
-  balance: number;
-}
+import { useGameStore } from '@/app/store/game-store';
+import { useShallow } from 'zustand/react/shallow';
 
-export const MobileBalance = ({ balance }: Props) => {
+export const MobileBalance = () => {
+  const { balance } = useGameStore(
+    useShallow((state) => ({
+      balance: state.balance,
+    }))
+  );
+
   return (
-    <div className="lg:hidden mb-4 max-[500px]:mb-2 px-4 max-[500px]:px-3 py-3 max-[500px]:py-2 bg-[#141a26] border border-white/5 rounded-xl flex justify-between items-center">
+    <div className="lg:hidden mb-4 max-[500px]:mb-2 px-4 max-[500px]:px-3 py-3 max-[500px]:py-2 bg-surface-panel border border-white/5 rounded-xl flex justify-between items-center">
       <span className="text-xs max-[500px]:text-[10px] uppercase text-white/20 tracking-[0.2em]">
         Balance:
       </span>

@@ -14,6 +14,14 @@
   --color-neon-pink: #ff00d4;
   --color-dragon-gold: #ffcc00;
 
+  --color-surface-base: #0a0d14;
+  --color-surface-card: #0a0c10;
+  --color-surface-panel: #141a26;
+  --color-surface-input: #0e141e;
+  --color-surface-highlight: #1b2030;
+  --color-surface-hover: #1c2331;
+  --color-action-blue: #025cc1;
+
   --color-background: #0a0e16;
   --color-foreground: #f7f7ff;
 

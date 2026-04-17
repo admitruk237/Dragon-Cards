@@ -74,7 +74,7 @@ export const DragonCard = memo(
             exit={{ rotateY: 90, opacity: 0 }}
             transition={{ duration: 0.3 }}
             className={cn(
-              'relative w-full h-full rounded-2xl overflow-hidden border-2 shadow-2xl bg-[#0a0c10] flex items-center justify-center',
+              'relative w-full h-full rounded-2xl overflow-hidden border-2 shadow-2xl bg-surface-card flex items-center justify-center',
               borderColor,
               showFront && gamePhase === GamePhase.RESULT && !resultStatus
                 ? 'opacity-30 grayscale'
