@@ -1,6 +1,7 @@
 import { useGameStore } from '@/app/store/game-store';
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui';
 import { RISK_CONFIG } from '@/entities/risk';
+import { useAudio } from '@/features/toggle-sound';
 import { type RiskLevel } from '@/shared/types';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -14,8 +15,11 @@ export const RiskSelector = () => {
     }))
   );
 
+  const { playSound } = useAudio();
+
   const handleRiskChange = (value: string) => {
     if (RISK_LEVELS.includes(value as RiskLevel)) {
+      playSound('click');
       setRisk(value as RiskLevel);
     }
   };

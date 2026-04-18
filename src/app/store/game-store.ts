@@ -22,9 +22,8 @@ export interface GameStore {
   readonly isLocked: boolean;
   setBetAmount: (amount: number) => void;
   setRisk: (risk: RiskLevel) => void;
-  placeBet: () => void;
+  placeBet: () => Promise<void>;
   moveBottomCard: (activeId: string, overId?: string, mode?: 'swap' | 'insert') => void;
-  confirmArrangement: () => void;
   revealNext: (index: number) => void;
   finishRound: () => void;
   toggleSound: () => void;
@@ -56,43 +55,45 @@ export const useGameStore = create<GameStore>()(
 
       get isLocked() {
         const { gamePhase } = get();
-        return gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT;
+        return gamePhase !== GamePhase.IDLE;
       },
 
       setBetAmount: (amount) => {
         const { balance, gamePhase } = get();
-        if (gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT) return;
+        if (gamePhase !== GamePhase.IDLE) return;
         set({ betAmount: clampBet(amount, balance) });
       },
 
       setRisk: (risk) => {
         const { gamePhase } = get();
-        if (gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT) return;
+        if (gamePhase !== GamePhase.IDLE) return;
         set({ risk });
       },
 
-      placeBet: () => {
+      placeBet: async () => {
         const { balance, betAmount, gamePhase } = get();
 
-        if (gamePhase !== GamePhase.IDLE && gamePhase !== GamePhase.RESULT) return;
+        if (gamePhase !== GamePhase.IDLE) return;
         if (betAmount > balance || betAmount <= 0) return;
-
-        const { topCards, bottomCards } = generateCards();
 
         set({
           balance: balance - betAmount,
-          topCards,
-          bottomCards,
-          gamePhase: GamePhase.ARRANGING,
+          gamePhase: GamePhase.REVEALING,
           result: null,
           resultCategory: null,
           winAmount: 0,
         });
+
+        await runRevealSequence(
+          get().topCards.length,
+          (index) => get().revealNext(index),
+          () => get().finishRound()
+        );
       },
 
       moveBottomCard: (activeId, overId, mode: 'swap' | 'insert' = 'swap') => {
         if (!overId || activeId === overId) return;
-        if (get().gamePhase !== GamePhase.ARRANGING) return;
+        if (get().gamePhase !== GamePhase.IDLE) return;
 
         const cards = [...get().bottomCards];
         const oldIndex = cards.findIndex((c) => c.id === activeId);
@@ -107,17 +108,6 @@ export const useGameStore = create<GameStore>()(
           }
           set({ bottomCards: cards });
         }
-      },
-
-      confirmArrangement: async () => {
-        if (get().gamePhase !== GamePhase.ARRANGING) return;
-        set({ gamePhase: GamePhase.REVEALING });
-
-        await runRevealSequence(
-          get().topCards.length,
-          (index) => get().revealNext(index),
-          () => get().finishRound()
-        );
       },
 
       revealNext: (index) => {
@@ -156,8 +146,11 @@ export const useGameStore = create<GameStore>()(
       },
 
       resetRound: () => {
+        const { topCards, bottomCards } = generateCards();
         set({
           gamePhase: GamePhase.IDLE,
+          topCards,
+          bottomCards,
           result: null,
           resultCategory: null,
           winAmount: 0,

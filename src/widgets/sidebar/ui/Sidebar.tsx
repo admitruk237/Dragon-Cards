@@ -1,17 +1,18 @@
 import { BetInput } from '@/features/place-bet';
 import { RiskSelector } from '@/features/select-risk';
+import { useAudio } from '@/features/toggle-sound';
 import { Button } from '@/shared/ui';
 import { GamePhase } from '@/shared/types';
 import { useGameStore } from '@/app/store/game-store';
 import { useShallow } from 'zustand/react/shallow';
 
 export const Sidebar = () => {
-  const { balance, placeBet, gamePhase, confirmArrangement } = useGameStore(
+  const { playSound } = useAudio();
+  const { balance, placeBet, gamePhase } = useGameStore(
     useShallow((state) => ({
       balance: state.balance,
       placeBet: state.placeBet,
       gamePhase: state.gamePhase,
-      confirmArrangement: state.confirmArrangement,
     }))
   );
 
@@ -23,10 +24,14 @@ export const Sidebar = () => {
         <RiskSelector />
 
         <Button
-          onClick={gamePhase === GamePhase.ARRANGING ? confirmArrangement : placeBet}
+          onClick={() => {
+            playSound('click');
+            placeBet();
+          }}
+          disabled={gamePhase !== GamePhase.IDLE}
           className="lg:mt-0 max-[500px]:p-3 max-[500px]:text-xs"
         >
-          {gamePhase === GamePhase.ARRANGING ? 'Confirm & Reveal' : 'Place Bet'}
+          Place Bet
         </Button>
         <div className="mt-auto hidden lg:block">
           <div className="flex w-full justify-center items-center gap-2 p-3 rounded-sm bg-surface-highlight mt-2">

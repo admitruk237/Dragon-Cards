@@ -1,8 +1,11 @@
 import { Button, Input } from '@/shared/ui';
 import { useGameStore } from '@/app/store/game-store';
+import { useAudio } from '@/features/toggle-sound';
 import { useShallow } from 'zustand/react/shallow';
+import { MAX_BET } from '@/shared/constants';
 
 export const BetInput = () => {
+  const { playSound } = useAudio();
   const { betAmount, setBetAmount, isLocked, halfBet, doubleBet, maxBet } = useGameStore(
     useShallow((state) => ({
       betAmount: state.betAmount,
@@ -21,7 +24,7 @@ export const BetInput = () => {
           Bet Amount
         </span>
         <div className="flex justify-between">
-          <span className="text-sm max-[500px]:text-xs text-white/30">Max: 1000.00</span>
+          <span className="text-sm max-[500px]:text-xs text-white/30">{`Max Bet: ${MAX_BET}.00`}</span>
           <span className="text-sm max-[500px]:text-xs text-white/30">$</span>
         </div>
       </div>
@@ -41,7 +44,10 @@ export const BetInput = () => {
             variant="ghost"
             size="sm"
             type="button"
-            onClick={halfBet}
+            onClick={() => {
+              playSound('click');
+              halfBet();
+            }}
             disabled={isLocked}
             className="h-7 px-2 text-[10px] font-black text-white/40 hover:text-white hover:bg-white/5 rounded-md transition-all active:scale-95"
           >
@@ -51,7 +57,10 @@ export const BetInput = () => {
             variant="ghost"
             size="sm"
             type="button"
-            onClick={doubleBet}
+            onClick={() => {
+              playSound('click');
+              doubleBet();
+            }}
             disabled={isLocked}
             className="h-7 px-2 text-[10px] font-black text-white/40 hover:text-white hover:bg-white/5 rounded-md transition-all active:scale-95"
           >
@@ -61,7 +70,10 @@ export const BetInput = () => {
             variant="ghost"
             size="sm"
             type="button"
-            onClick={maxBet}
+            onClick={() => {
+              playSound('click');
+              maxBet();
+            }}
             disabled={isLocked}
             className="h-7 px-2 text-[10px] font-black text-white/40 hover:text-white hover:bg-white/5 rounded-md transition-all active:scale-95"
           >

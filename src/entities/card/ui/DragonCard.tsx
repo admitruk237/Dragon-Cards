@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/shared/lib/cn';
 import { type DragonType, GamePhase, type ResultStatus } from '@/shared/types';
-import { useAudio } from '@/features/toggle-sound';
 import { memo, useEffect } from 'react';
 
 const CARD_BACK = '/assets/cards/card_back.webp';
@@ -23,6 +22,7 @@ interface Props {
   className?: string;
   onClick?: () => void;
   gamePhase: GamePhase;
+  onFlip?: () => void;
 }
 
 export const DragonCard = memo(
@@ -34,14 +34,13 @@ export const DragonCard = memo(
     className,
     onClick,
     gamePhase,
+    onFlip,
   }: Props) => {
-    const { playSound } = useAudio();
-
     useEffect(() => {
-      if (isRevealed) {
-        playSound('flip');
+      if (isRevealed && onFlip) {
+        onFlip();
       }
-    }, [isRevealed, playSound]);
+    }, [isRevealed, onFlip]);
 
     const showFront = type === 'bottom' ? true : isRevealed;
     const currentImage = showFront ? DRAGON_IMAGES[dragonType || 'fire'] : CARD_BACK;
@@ -59,9 +58,11 @@ export const DragonCard = memo(
       <div
         className={cn(
           'relative w-[70px] h-[120px] max-[500px]:w-[55px] max-[500px]:h-[95px] md:w-[90px] md:h-[155px] xl:w-[110px] xl:h-[190px] group transition-all duration-300',
-          type === 'bottom' && gamePhase === GamePhase.ARRANGING
-            ? 'cursor-grab active:cursor-grabbing '
-            : 'cursor-default',
+          type === 'bottom' && gamePhase === GamePhase.IDLE
+            ? 'cursor-grab active:cursor-grabbing'
+            : type === 'bottom'
+              ? 'cursor-not-allowed'
+              : 'cursor-default',
           className
         )}
         onClick={onClick}
@@ -69,9 +70,9 @@ export const DragonCard = memo(
         <AnimatePresence mode="wait">
           <motion.div
             key={showFront ? 'front' : 'back'}
-            initial={{ rotateY: -90, opacity: 0 }}
+            initial={type === 'top' ? { rotateY: -90, opacity: 0 } : false}
             animate={{ rotateY: 0, opacity: 1 }}
-            exit={{ rotateY: 90, opacity: 0 }}
+            exit={type === 'top' ? { rotateY: 90, opacity: 0 } : undefined}
             transition={{ duration: 0.3 }}
             className={cn(
               'relative w-full h-full rounded-2xl overflow-hidden border-2 shadow-2xl bg-surface-card flex items-center justify-center',

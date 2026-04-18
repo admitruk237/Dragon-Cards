@@ -22,6 +22,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { SoundToggle, useAudio } from '@/features/toggle-sound';
 import { useShallow } from 'zustand/react/shallow';
 import { GamePhase } from '@/shared/types';
+import { cn } from '@/shared/lib/cn';
 
 export const GameField = () => {
   const { playSound } = useAudio();
@@ -56,7 +57,7 @@ export const GameField = () => {
 
   const handleCardClick = useCallback(
     (id: string) => {
-      if (gamePhase !== GamePhase.ARRANGING) return;
+      if (gamePhase !== GamePhase.IDLE) return;
 
       playSound('click');
 
@@ -103,6 +104,7 @@ export const GameField = () => {
               isRevealed={card.isRevealed}
               resultStatus={card.resultStatus}
               gamePhase={gamePhase}
+              onFlip={() => playSound('flip')}
             />
           ))}
         </div>
@@ -110,7 +112,12 @@ export const GameField = () => {
       <div className="flex flex-col gap-6 items-center">
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={bottomCardsList} strategy={horizontalListSortingStrategy}>
-            <div className="flex gap-2 max-[500px]:gap-1 md:gap-4 xl:gap-8">
+            <div
+              className={cn(
+                'flex gap-2 max-[500px]:gap-1 md:gap-4 xl:gap-8',
+                gamePhase !== GamePhase.IDLE && 'cursor-not-allowed'
+              )}
+            >
               {bottomCards.map((card, i) => {
                 const multiplier = config.multipliersLayout[i];
                 const category = getMultiplierCategory(multiplier);

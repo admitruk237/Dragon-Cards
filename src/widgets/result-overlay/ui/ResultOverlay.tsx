@@ -71,7 +71,15 @@ export const ResultOverlay = () => {
               </div>
             )}
 
-            <Button variant="secondary" size="pill" className="mt-6" onClick={resetRound}>
+            <Button
+              variant="secondary"
+              size="pill"
+              className="mt-6"
+              onClick={() => {
+                playSound('click');
+                resetRound();
+              }}
+            >
               Play Again
             </Button>
           </motion.div>
