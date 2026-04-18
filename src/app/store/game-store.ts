@@ -146,7 +146,8 @@ export const useGameStore = create<GameStore>()(
       },
 
       resetRound: () => {
-        const { topCards, bottomCards } = generateCards();
+        const { topCards } = generateCards();
+        const bottomCards = get().bottomCards.map((card) => ({ ...card, resultStatus: undefined }));
         set({
           gamePhase: GamePhase.IDLE,
           topCards,

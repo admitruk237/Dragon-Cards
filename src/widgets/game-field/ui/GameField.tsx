@@ -1,6 +1,6 @@
 import { useGameStore } from '@/app/store/game-store';
 import { DragonCard } from '@/entities/card';
-import { getMultiplierCategory, getMultiplierVariant } from '@/entities/risk';
+import { RISK_CONFIG, getMultiplierCategory, getMultiplierVariant } from '@/entities/risk';
 import {
   closestCenter,
   DndContext,
@@ -28,15 +28,16 @@ export const GameField = () => {
   const { playSound } = useAudio();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const { topCards, bottomCards, config, moveBottomCard, gamePhase } = useGameStore(
+  const { topCards, bottomCards, risk, moveBottomCard, gamePhase } = useGameStore(
     useShallow((state) => ({
       topCards: state.topCards,
       bottomCards: state.bottomCards,
-      config: state.config,
+      risk: state.risk,
       moveBottomCard: state.moveBottomCard,
       gamePhase: state.gamePhase,
     }))
   );
+  const config = RISK_CONFIG[risk];
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
