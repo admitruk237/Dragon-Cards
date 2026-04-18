@@ -4,6 +4,7 @@ import { DragonCard } from '@/entities/card';
 import { cn } from '@/shared/lib/cn';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
 import { type DragonType, GamePhase, type ResultStatus } from '@/shared/types';
+import { motion } from 'framer-motion';
 
 interface Props {
   id: string;
@@ -35,13 +36,13 @@ export const SortableCard = (props: Props) => {
         isDragging ? 'opacity-30' : 'opacity-100'
       )}
     >
-      <DragonCard
-        gamePhase={gamePhase}
-        {...rest}
-        className={cn(
-          isSelected ? 'ring-2 rounded-2xl ring-yellow-400 scale-105 shadow-lg z-50' : 'ring-0'
-        )}
-      />
+      <motion.div layout transition={{ duration: 0.35, ease: 'easeInOut' }}>
+        <DragonCard
+          gamePhase={gamePhase}
+          {...rest}
+          className={cn(isSelected ? 'ring-2 rounded-2xl ring-yellow-400  shadow-lg' : 'ring-0')}
+        />
+      </motion.div>
     </div>
   );
 

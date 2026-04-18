@@ -23,7 +23,7 @@ export interface GameStore {
   setBetAmount: (amount: number) => void;
   setRisk: (risk: RiskLevel) => void;
   placeBet: () => void;
-  moveBottomCard: (activeId: string, overId?: string) => void;
+  moveBottomCard: (activeId: string, overId?: string, mode?: 'swap' | 'insert') => void;
   confirmArrangement: () => void;
   revealNext: (index: number) => void;
   finishRound: () => void;
@@ -90,7 +90,7 @@ export const useGameStore = create<GameStore>()(
         });
       },
 
-      moveBottomCard: (activeId, overId) => {
+      moveBottomCard: (activeId, overId, mode: 'swap' | 'insert' = 'swap') => {
         if (!overId || activeId === overId) return;
         if (get().gamePhase !== GamePhase.ARRANGING) return;
 
@@ -99,8 +99,12 @@ export const useGameStore = create<GameStore>()(
         const newIndex = cards.findIndex((c) => c.id === overId);
 
         if (oldIndex !== -1 && newIndex !== -1) {
-          const [moved] = cards.splice(oldIndex, 1);
-          cards.splice(newIndex, 0, moved);
+          if (mode === 'swap') {
+            [cards[oldIndex], cards[newIndex]] = [cards[newIndex], cards[oldIndex]];
+          } else {
+            const [moved] = cards.splice(oldIndex, 1);
+            cards.splice(newIndex, 0, moved);
+          }
           set({ bottomCards: cards });
         }
       },

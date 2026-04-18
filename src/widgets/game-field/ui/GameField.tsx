@@ -21,6 +21,7 @@ import { Badge } from '@/shared/ui';
 import { useCallback, useMemo, useState } from 'react';
 import { SoundToggle, useAudio } from '@/features/toggle-sound';
 import { useShallow } from 'zustand/react/shallow';
+import { GamePhase } from '@/shared/types';
 
 export const GameField = () => {
   const { playSound } = useAudio();
@@ -55,22 +56,34 @@ export const GameField = () => {
 
   const handleCardClick = useCallback(
     (id: string) => {
+      if (gamePhase !== GamePhase.ARRANGING) return;
+
       playSound('click');
-      setSelectedId((prev) => {
-        if (prev === null) return id;
-        if (prev === id) return null;
-        moveBottomCard(prev, id);
-        return null;
-      });
+
+      if (selectedId === null) {
+        setSelectedId(id);
+        return;
+      }
+
+      if (selectedId === id) {
+        setSelectedId(null);
+        return;
+      }
+
+      moveBottomCard(selectedId, id, 'swap');
+      setSelectedId(null);
     },
-    [playSound, moveBottomCard]
+    [playSound, moveBottomCard, selectedId, gamePhase]
   );
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
-      moveBottomCard(String(active.id), over ? String(over.id) : undefined);
-      playSound('flip');
+      setSelectedId(null);
+      if (over && active.id !== over.id) {
+        moveBottomCard(String(active.id), String(over.id), 'insert');
+        playSound('flip');
+      }
     },
     [moveBottomCard, playSound]
   );
