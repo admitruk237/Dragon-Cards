@@ -58,11 +58,9 @@ export const DragonCard = memo(
       <div
         className={cn(
           'relative w-[70px] h-[120px] max-[500px]:w-[55px] max-[500px]:h-[95px] md:w-[90px] md:h-[155px] xl:w-[110px] xl:h-[190px] group transition-all duration-300',
-          type === 'bottom' && gamePhase === GamePhase.IDLE
-            ? 'cursor-grab active:cursor-grabbing'
-            : type === 'bottom'
-              ? 'cursor-not-allowed'
-              : 'cursor-default',
+          type === 'bottom' && gamePhase === GamePhase.IDLE && 'cursor-grab active:cursor-grabbing',
+          type === 'bottom' && gamePhase !== GamePhase.IDLE && 'cursor-not-allowed',
+          type !== 'bottom' && 'cursor-default',
           className
         )}
         onClick={onClick}

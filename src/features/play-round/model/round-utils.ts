@@ -1,9 +1,6 @@
 import type { Card } from '@/shared/types';
 import { getMatchStatus } from '@/entities/card';
-import {
-  getMultiplierCategory,
-  type MultiplierCategory,
-} from '@/entities/risk';
+import { getMultiplierCategory, type MultiplierCategory } from '@/entities/risk';
 
 interface RoundResult {
   updatedTop: Card[];

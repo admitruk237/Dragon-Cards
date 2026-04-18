@@ -9,7 +9,14 @@ export const SoundToggle = () => {
   const { playSound } = useAudio();
   return (
     <div className="absolute top-0 left-0 md:top-3 md:left-4 max-[500px]:scale-75 max-[500px]:origin-top-left">
-      <Button variant="outline" size="lg" onClick={() => { playSound('click'); toggleSound(); }}>
+      <Button
+        variant="outline"
+        size="lg"
+        onClick={() => {
+          playSound('click');
+          toggleSound();
+        }}
+      >
         {isSoundOn ? <Volume2 /> : <VolumeOff />}
       </Button>
     </div>
