@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# 🐉 Dragon Cards
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Dragon Cards — карткова гра в жанрі iGaming з унікальним механізмом ризику та винагороди.
 
-Currently, two official plugins are available:
+![Dragon Cards Demo](public/assets/demo.gif)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📋 Опис гри
 
-## React Compiler
+Гравець обирає рівень ризику та робить ставку. Мета гри — розташувати свої картки драконів (нижній ряд) таким чином, щоб вони збіглися з прихованими картками верхнього ряду в позиціях з найкращими множниками.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Основні механіки:
 
-## Expanding the ESLint configuration
+- **Рівні ризику**: Чотири рівні (Low, Med, High, Classic), що визначають кількість LOST-карток та потенційні виграші.
+- **Drag & Drop**: Повна свобода у виборі порядку карток у нижньому ряді.
+- **Система анімацій**: Плавні 3D-перевороти карток та ефекти результатів.
+- **Аудіо-супровід**: 8 унікальних звукових ефектів для повної іммерсії.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠 Технологічний стек
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Core**: React 19 + TypeScript
+- **State Management**: Zustand 5 + Persistence
+- **Animations**: Framer Motion
+- **D&D**: dnd-kit
+- **Architecture**: Feature-Sliced Design (FSD)
+- **Styling**: Tailwind CSS 4
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Запуск проекту
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. **Клонувати репозиторій**:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+   ```bash
+   git clone <repository-url>
+   cd dragon-cards
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2. **Встановити залежності**:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   ```bash
+   npm install
+   ```
+
+3. **Запустити в режимі розробки**:
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Зібрати для продакшну**:
+   ```bash
+   npm run build
+   ```
+
+## 📐 Архітектура (FSD)
+
+Проект побудований за методологією **Feature-Sliced Design**:
+
+- `app/`: Ініціалізація додатку, глобальний стор та стилі.
+- `widgets/`: Великі блоки інтерфейсу (ігрове поле, сайдбар, оверлей результатів).
+- `features/`: Ізольована бізнес-логіка (ставки, вибір ризику, звук).
+- `entities/`: Бізнес-сутності проекту (картки драконів, конфігурація ризиків).
+- `shared/`: Універсальні UI-компоненти, константи та типи.
+
+## 🎨 Дизайн
+
+- **Тематика**: Темна фентезі-печера з неоновими акцентами.
+- **Дракони**: 6 унікальних стихій (Fire, Ice, Storm, Earth, Shadow, Wind).
+- **Адаптивність**: Повна підтримка мобільних пристроїв та десктопів.
