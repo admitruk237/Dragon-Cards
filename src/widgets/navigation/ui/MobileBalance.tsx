@@ -1,6 +1,7 @@
 import { useGameStore } from '@/app/store/game-store';
 import { useShallow } from 'zustand/react/shallow';
-import { BALANCE_LABEL } from '@/shared/constants';
+import { BALANCE_LABEL, CURRENCY_SYMBOL } from '@/shared/constants';
+import { AnimatedNumber } from '@/shared/ui';
 
 export const MobileBalance = () => {
   const { balance } = useGameStore(
@@ -15,7 +16,8 @@ export const MobileBalance = () => {
         {BALANCE_LABEL}
       </span>
       <span className="text-sm max-xs:text-xs font-bold text-white">
-        ${balance.toFixed(2)}
+        {CURRENCY_SYMBOL}
+        <AnimatedNumber value={balance} decimals={2} duration={0.8} />
       </span>
     </div>
   );
