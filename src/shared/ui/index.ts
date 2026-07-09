@@ -3,3 +3,4 @@ export * from './badge';
 export * from './input';
 export * from './toggle';
 export * from './toggle-group';
+export * from './animated-number';
