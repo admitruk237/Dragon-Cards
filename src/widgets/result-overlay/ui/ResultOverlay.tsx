@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useGameStore } from '@/app/store/game-store';
 import { useEffect, useState } from 'react';
-import { Button } from '@/shared/ui';
+import { Button, AnimatedNumber } from '@/shared/ui';
 import { getMultiplierTitle } from '@/entities/risk';
 import { GamePhase } from '@/shared/types';
 import { useAudio } from '@/features/toggle-sound';
@@ -65,7 +65,7 @@ export const ResultOverlay = () => {
                   {title}
                 </motion.div>
                 <div className="text-2xl md:text-4xl font-mono text-white font-bold">
-                  + {winAmount.toLocaleString()}{' '}
+                  + <AnimatedNumber value={winAmount} decimals={0} duration={1.5} />{' '}
                   <span className="opacity-50">{CURRENCY_SYMBOL}</span>
                 </div>
               </div>
