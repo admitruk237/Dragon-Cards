@@ -4,6 +4,7 @@ import { type DragonType, GamePhase, type ResultStatus } from '@/shared/types';
 import { memo, useEffect } from 'react';
 
 const CARD_BACK = '/assets/cards/card_back.webp';
+const CARD_ALT_TEXT = 'Card';
 
 const DRAGON_IMAGES: Record<DragonType, string> = {
   fire: '/assets/cards/fire.webp',
@@ -45,19 +46,19 @@ export const DragonCard = memo(
     const showFront = type === 'bottom' ? true : isRevealed;
     const currentImage = showFront ? DRAGON_IMAGES[dragonType || 'fire'] : CARD_BACK;
 
-    let borderColor = 'border-white/10';
+    let borderColor = 'border-border';
     if (showFront) {
       if (resultStatus === 'win')
-        borderColor = 'border-green-400 shadow-[0_0_15px_rgba(74,222,128,0.5)]';
+        borderColor = 'border-success shadow-[0_0_15px_rgba(74,222,128,0.5)]';
       else if (resultStatus === 'lost')
-        borderColor = 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]';
+        borderColor = 'border-destructive shadow-[0_0_15px_rgba(255,23,68,0.5)]';
       else borderColor = 'border-white/20';
     }
 
     return (
       <div
         className={cn(
-          'relative w-[70px] h-[120px] max-[500px]:w-[55px] max-[500px]:h-[95px] md:w-[90px] md:h-[155px] xl:w-[110px] xl:h-[190px] group transition-all duration-300',
+          'relative w-[70px] h-[120px] max-xs:w-[55px] max-xs:h-[95px] md:w-[90px] md:h-[155px] xl:w-[110px] xl:h-[190px] group transition-all duration-300',
           type === 'bottom' && gamePhase === GamePhase.IDLE && 'cursor-grab active:cursor-grabbing',
           type === 'bottom' && gamePhase !== GamePhase.IDLE && 'cursor-not-allowed',
           type !== 'bottom' && 'cursor-default',
@@ -83,17 +84,17 @@ export const DragonCard = memo(
             <img
               src={currentImage}
               className="absolute inset-0 w-full h-full object-cover z-0"
-              alt="Card"
+              alt={CARD_ALT_TEXT}
             />
             {showFront && (
               <div
                 className={cn(
                   'relative z-10 w-full h-full flex flex-col justify-end p-2 bg-gradient-to-t from-black via-transparent to-transparent',
-                  resultStatus === 'win' && 'bg-green-400/10',
-                  resultStatus === 'lost' && 'bg-red-500/10'
+                  resultStatus === 'win' && 'bg-success/10',
+                  resultStatus === 'lost' && 'bg-destructive/10'
                 )}
               >
-                <span className="relative z-20 text-[8px] max-[500px]:text-[6px] md:text-[10px] font-black uppercase text-white/50 tracking-[0.2em] max-[500px]:tracking-[0.1em] text-center mb-0.5 md:mb-1">
+                <span className="relative z-20 text-[8px] max-xs:text-[6px] md:text-[10px] font-black uppercase text-white/50 tracking-[0.2em] max-xs:tracking-[0.1em] text-center mb-0.5 md:mb-1">
                   {dragonType}
                 </span>
               </div>

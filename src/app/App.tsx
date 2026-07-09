@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="relative min-h-screen lg:h-screen max-w-[1280px] mx-auto p-4 md:p-6 flex flex-col lg:flex-row overflow-x-hidden lg:overflow-hidden font-sans selection:bg-neon-cyan/30">
       <MobileBalance />
-      <div className="relative z-20 flex-1 w-full h-full flex flex-col-reverse lg:flex-row overflow-hidden rounded-2xl bg-surface-base/50 backdrop-blur-sm border border-white/5">
+      <div className="relative z-20 flex-1 w-full h-full flex flex-col-reverse lg:flex-row overflow-hidden rounded-2xl bg-surface-base/50 backdrop-blur-sm border border-muted">
         <ResultOverlay />
         <Sidebar />
         <GameView />

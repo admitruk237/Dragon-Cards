@@ -1,6 +1,6 @@
 import { useGameStore } from '@/app/store/game-store';
 import { DragonCard } from '@/entities/card';
-import { RISK_CONFIG, getMultiplierCategory, getMultiplierVariant } from '@/entities/risk';
+import { getMultiplierCategory, getMultiplierVariant, RISK_CONFIG } from '@/entities/risk';
 import {
   closestCenter,
   DndContext,
@@ -24,6 +24,10 @@ import { useShallow } from 'zustand/react/shallow';
 import { GamePhase } from '@/shared/types';
 import { cn } from '@/shared/lib/cn';
 
+const DRAG_ACTIVATION_DISTANCE_PX = 8;
+const DRAG_TOUCH_ACTIVATION_DELAY_MS = 150;
+const DRAG_TOUCH_ACTIVATION_TOLERANCE_PX = 5;
+
 export const GameField = () => {
   const { playSound } = useAudio();
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -42,13 +46,13 @@ export const GameField = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: DRAG_ACTIVATION_DISTANCE_PX,
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 150,
-        tolerance: 5,
+        delay: DRAG_TOUCH_ACTIVATION_DELAY_MS,
+        tolerance: DRAG_TOUCH_ACTIVATION_TOLERANCE_PX,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -93,10 +97,10 @@ export const GameField = () => {
   const bottomCardsList = useMemo(() => bottomCards.map((c) => c.id), [bottomCards]);
 
   return (
-    <div className="flex relative h-full flex-col items-center gap-12 max-[500px]:gap-8 md:gap-20 xl:gap-28 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
+    <div className="flex relative h-full flex-col items-center gap-12 max-xs:gap-8 md:gap-20 xl:gap-28 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
       <SoundToggle />
-      <div className="flex flex-col items-center mt-16 max-[500px]:mt-12 md:mt-10 xl:mt-14">
-        <div className="flex gap-2 max-[500px]:gap-1 md:gap-4 xl:gap-8">
+      <div className="flex flex-col items-center mt-16 max-xs:mt-12 md:mt-10 xl:mt-14">
+        <div className="flex gap-2 max-xs:gap-1 md:gap-4 xl:gap-8">
           {topCards.map((card) => (
             <DragonCard
               key={card.id}
@@ -115,7 +119,7 @@ export const GameField = () => {
           <SortableContext items={bottomCardsList} strategy={horizontalListSortingStrategy}>
             <div
               className={cn(
-                'flex gap-2 max-[500px]:gap-1 md:gap-4 xl:gap-8',
+                'flex gap-2 max-xs:gap-1 md:gap-4 xl:gap-8',
                 gamePhase !== GamePhase.IDLE && 'cursor-not-allowed'
               )}
             >
@@ -126,7 +130,7 @@ export const GameField = () => {
                 return (
                   <div
                     key={card.id}
-                    className="flex flex-col items-center gap-1.5 max-[500px]:gap-0.5 md:gap-3 xl:gap-5"
+                    className="flex flex-col items-center gap-1.5 max-xs:gap-0.5 md:gap-3 xl:gap-5"
                   >
                     <SortableCard
                       onClick={() => handleCardClick(card.id)}
@@ -140,7 +144,7 @@ export const GameField = () => {
 
                     <Badge
                       variant={getMultiplierVariant(category)}
-                      className="px-2 py-0.5 text-[8px] max-[500px]:px-1 max-[500px]:text-[6px] md:px-3 md:py-1 md:text-[10px] xl:px-4 xl:py-1.5 xl:text-[11px]"
+                      className="px-2 py-0.5 text-[8px] max-xs:px-1 max-xs:text-[6px] md:px-3 md:py-1 md:text-[10px] xl:px-4 xl:py-1.5 xl:text-[11px]"
                     >
                       {multiplier}
                       {typeof multiplier === 'number' ? 'x' : ''}

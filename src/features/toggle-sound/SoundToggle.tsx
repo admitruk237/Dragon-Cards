@@ -8,7 +8,7 @@ export const SoundToggle = () => {
   const toggleSound = useGameStore((state) => state.toggleSound);
   const { playSound } = useAudio();
   return (
-    <div className="absolute top-0 left-0 md:top-3 md:left-4 max-[500px]:scale-75 max-[500px]:origin-top-left">
+    <div className="absolute top-0 left-0 md:top-3 md:left-4 max-xs:scale-75 max-xs:origin-top-left">
       <Button
         variant="outline"
         size="lg"

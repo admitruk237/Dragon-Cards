@@ -5,3 +5,4 @@ export const INITIAL_BALANCE = 100000;
 
 export const REVEAL_DELAY_MS = 350;
 export const FINISH_DELAY_MS = 600;
+export const RESULT_REVEAL_DELAY_MS = 1500;

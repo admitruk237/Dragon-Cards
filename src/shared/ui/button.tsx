@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           'w-full bg-action-blue p-5 cursor-pointer text-white font-black text-sm rounded-md hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_30px_rgba(0,242,255,0.3)] hover:shadow-[0_0_20px_rgba(0,242,255,0.5)] disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed group/btn overflow-hidden relative',
         outline:
-          'bg-surface-panel p-4 h-auto aspect-square rounded-md text-base text-white/40 hover:bg-surface-hover hover:text-white/80 transition-all border border-white/5 active:scale-95',
+          'bg-surface-panel p-4 h-auto aspect-square rounded-md text-base text-white/40 hover:bg-surface-hover hover:text-white/80 transition-all border border-muted active:scale-95',
         secondary:
           'bg-white text-black font-black uppercase text-sm rounded-full hover:bg-neon-cyan hover:scale-105 transition-all shadow-xl',
         ghost:

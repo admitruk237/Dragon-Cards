@@ -6,6 +6,9 @@ import { getMultiplierTitle } from '@/entities/risk';
 import { GamePhase } from '@/shared/types';
 import { useAudio } from '@/features/toggle-sound';
 import { useShallow } from 'zustand/react/shallow';
+import { CURRENCY_SYMBOL, RESULT_REVEAL_DELAY_MS } from '@/shared/constants';
+
+const PLAY_AGAIN_LABEL = 'Play Again';
 
 export const ResultOverlay = () => {
   const { result, resultCategory, winAmount, gamePhase, resetRound } = useGameStore(
@@ -22,7 +25,7 @@ export const ResultOverlay = () => {
 
   useEffect(() => {
     if (gamePhase === GamePhase.RESULT) {
-      const timer = setTimeout(() => setShow(true), 1500);
+      const timer = setTimeout(() => setShow(true), RESULT_REVEAL_DELAY_MS);
       if (result === 'win') {
         playSound('win');
       } else if (result === 'draw') {
@@ -62,7 +65,8 @@ export const ResultOverlay = () => {
                   {title}
                 </motion.div>
                 <div className="text-2xl md:text-4xl font-mono text-white font-bold">
-                  + {winAmount.toLocaleString()} <span className="opacity-50">$</span>
+                  + {winAmount.toLocaleString()}{' '}
+                  <span className="opacity-50">{CURRENCY_SYMBOL}</span>
                 </div>
               </div>
             ) : (
@@ -80,7 +84,7 @@ export const ResultOverlay = () => {
                 resetRound();
               }}
             >
-              Play Again
+              {PLAY_AGAIN_LABEL}
             </Button>
           </motion.div>
         </motion.div>

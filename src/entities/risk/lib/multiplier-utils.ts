@@ -1,9 +1,12 @@
 export type MultiplierCategory = 'low' | 'win' | 'high' | 'lost' | 'draw';
 
+const HIGH_MULTIPLIER_THRESHOLD = 10;
+const WIN_MULTIPLIER_THRESHOLD = 3;
+
 export const getMultiplierCategory = (val: number | 'LOST'): MultiplierCategory => {
   if (val === 'LOST') return 'lost';
-  if (val >= 10) return 'high';
-  if (val >= 3) return 'win';
+  if (val >= HIGH_MULTIPLIER_THRESHOLD) return 'high';
+  if (val >= WIN_MULTIPLIER_THRESHOLD) return 'win';
   return 'low';
 };
 
