@@ -1,7 +1,7 @@
 import { Button } from '@/shared/ui';
 import { useGameStore } from '@/app/store/game-store';
 import { Volume2, VolumeOff } from 'lucide-react';
-import { useAudio } from './hooks/useAudio';
+import { useAudio } from '../model/useAudio';
 
 export const SoundToggle = () => {
   const isSoundOn = useGameStore((state) => state.isSoundOn);

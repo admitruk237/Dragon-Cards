@@ -2,7 +2,6 @@ export type RiskLevel = 'low' | 'medium' | 'high' | 'classic';
 
 export enum GamePhase {
   IDLE = 'idle',
-  ARRANGING = 'arranging',
   REVEALING = 'revealing',
   RESULT = 'result',
 }

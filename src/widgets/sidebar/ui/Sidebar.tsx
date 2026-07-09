@@ -1,7 +1,7 @@
 import { BetInput } from '@/features/place-bet';
 import { RiskSelector } from '@/features/select-risk';
 import { useAudio } from '@/features/toggle-sound';
-import { Button, AnimatedNumber } from '@/shared/ui';
+import { AnimatedNumber, Button } from '@/shared/ui';
 import { GamePhase } from '@/shared/types';
 import { useGameStore } from '@/app/store/game-store';
 import { useShallow } from 'zustand/react/shallow';
@@ -39,11 +39,9 @@ export const Sidebar = () => {
         </Button>
         <div className="mt-auto hidden lg:block">
           <div className="flex w-full justify-center items-center gap-2 p-3 rounded-sm bg-surface-highlight mt-2">
-            <span className="text-sm uppercase text-white/20 tracking-[0.2em]">
-              {BALANCE_LABEL}
-            </span>
+            <span className="text-sm uppercase text-white/20 tracking-super">{BALANCE_LABEL}</span>
             <span className="text-sm text-white">
-              <AnimatedNumber value={balance} decimals={2} duration={0.8} />
+              <AnimatedNumber value={balance} />
             </span>
           </div>
         </div>

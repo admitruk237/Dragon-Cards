@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 
 interface Props {
   id: string;
-  isRevealed?: boolean;
   resultStatus?: ResultStatus;
   dragonType?: DragonType;
   type: 'top' | 'bottom';
@@ -45,7 +44,7 @@ export const SortableCard = (props: Props) => {
         <DragonCard
           gamePhase={gamePhase}
           {...rest}
-          className={cn(isSelected ? 'ring-2 rounded-2xl ring-yellow-400 shadow-lg' : 'ring-0')}
+          className={cn(isSelected ? 'ring-2 rounded-2xl ring-dragon-gold shadow-lg' : 'ring-0')}
         />
       </motion.div>
     </div>

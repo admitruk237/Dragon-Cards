@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/shared/lib/cn';
 import { type DragonType, GamePhase, type ResultStatus } from '@/shared/types';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 const CARD_BACK = '/assets/cards/card_back.webp';
 const CARD_ALT_TEXT = 'Card';
@@ -21,7 +21,6 @@ interface Props {
   dragonType?: DragonType;
   type: 'top' | 'bottom';
   className?: string;
-  onClick?: () => void;
   gamePhase: GamePhase;
   onFlip?: () => void;
 }
@@ -33,14 +32,15 @@ export const DragonCard = memo(
     dragonType = 'fire',
     type,
     className,
-    onClick,
     gamePhase,
     onFlip,
   }: Props) => {
+    const prevRevealed = useRef(isRevealed);
     useEffect(() => {
-      if (isRevealed && onFlip) {
-        onFlip();
+      if (isRevealed && !prevRevealed.current) {
+        onFlip?.();
       }
+      prevRevealed.current = isRevealed;
     }, [isRevealed, onFlip]);
 
     const showFront = type === 'bottom' ? true : isRevealed;
@@ -48,10 +48,8 @@ export const DragonCard = memo(
 
     let borderColor = 'border-border';
     if (showFront) {
-      if (resultStatus === 'win')
-        borderColor = 'border-success shadow-[0_0_15px_rgba(74,222,128,0.5)]';
-      else if (resultStatus === 'lost')
-        borderColor = 'border-destructive shadow-[0_0_15px_rgba(255,23,68,0.5)]';
+      if (resultStatus === 'win') borderColor = 'border-success shadow-glow-success';
+      else if (resultStatus === 'lost') borderColor = 'border-destructive shadow-glow-destructive';
       else borderColor = 'border-white/20';
     }
 
@@ -64,7 +62,6 @@ export const DragonCard = memo(
           type !== 'bottom' && 'cursor-default',
           className
         )}
-        onClick={onClick}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -94,7 +91,7 @@ export const DragonCard = memo(
                   resultStatus === 'lost' && 'bg-destructive/10'
                 )}
               >
-                <span className="relative z-20 text-[8px] max-xs:text-[6px] md:text-[10px] font-black uppercase text-white/50 tracking-[0.2em] max-xs:tracking-[0.1em] text-center mb-0.5 md:mb-1">
+                <span className="relative z-20 text-4xs max-xs:text-5xs md:text-3xs font-black uppercase text-white/50 tracking-super max-xs:tracking-widest text-center mb-0.5 md:mb-1">
                   {dragonType}
                 </span>
               </div>

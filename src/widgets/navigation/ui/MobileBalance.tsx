@@ -12,12 +12,12 @@ export const MobileBalance = () => {
 
   return (
     <div className="lg:hidden mb-4 max-xs:mb-2 px-4 max-xs:px-3 py-3 max-xs:py-2 bg-surface-panel border border-muted rounded-xl flex justify-between items-center">
-      <span className="text-xs max-xs:text-[10px] uppercase text-white/20 tracking-[0.2em]">
+      <span className="text-xs max-xs:text-3xs uppercase text-white/20 tracking-super">
         {BALANCE_LABEL}
       </span>
       <span className="text-sm max-xs:text-xs font-bold text-white">
         {CURRENCY_SYMBOL}
-        <AnimatedNumber value={balance} decimals={2} duration={0.8} />
+        <AnimatedNumber value={balance} />
       </span>
     </div>
   );

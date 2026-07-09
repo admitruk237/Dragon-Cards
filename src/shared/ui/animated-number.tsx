@@ -20,5 +20,11 @@ interface Props {
 }
 
 export const AnimatedNumber = ({ value, decimals = 2, duration = 0.8, className }: Props) => (
-  <CountUp end={value} decimals={decimals} duration={duration} preserveValue className={className} />
+  <CountUp
+    end={value}
+    decimals={decimals}
+    duration={duration}
+    preserveValue
+    className={className}
+  />
 );

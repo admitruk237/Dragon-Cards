@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { type Card, GamePhase, type RiskLevel } from '@/shared/types';
 import { generateCards } from '@/entities/card';
-import { type MultiplierCategory, RISK_CONFIG, type RiskConfig } from '@/entities/risk';
+import { type MultiplierCategory, RISK_CONFIG } from '@/entities/risk';
 import { clampBet } from '@/features/place-bet';
 import { calculateRoundResult, runRevealSequence } from '@/features/play-round';
-import { INITIAL_BALANCE } from '@/shared/constants';
+import { INITIAL_BALANCE, MIN_BET } from '@/shared/constants';
 
 export interface GameStore {
   balance: number;
@@ -18,8 +18,6 @@ export interface GameStore {
   resultCategory: MultiplierCategory | null;
   winAmount: number;
   isSoundOn: boolean;
-  readonly config: RiskConfig;
-  readonly isLocked: boolean;
   setBetAmount: (amount: number) => void;
   setRisk: (risk: RiskLevel) => void;
   placeBet: () => Promise<void>;
@@ -35,11 +33,13 @@ export interface GameStore {
 
 const { topCards: initialTop, bottomCards: initialBottom } = generateCards();
 
+type PersistedGameState = Pick<GameStore, 'balance' | 'isSoundOn' | 'risk'>;
+
 export const useGameStore = create<GameStore>()(
   persist(
     (set, get) => ({
       balance: INITIAL_BALANCE,
-      betAmount: 1,
+      betAmount: MIN_BET,
       risk: 'low',
       gamePhase: GamePhase.IDLE,
       topCards: initialTop,
@@ -48,15 +48,6 @@ export const useGameStore = create<GameStore>()(
       resultCategory: null,
       winAmount: 0,
       isSoundOn: true,
-
-      get config() {
-        return RISK_CONFIG[get().risk];
-      },
-
-      get isLocked() {
-        const { gamePhase } = get();
-        return gamePhase !== GamePhase.IDLE;
-      },
 
       setBetAmount: (amount) => {
         const { balance, gamePhase } = get();
@@ -176,8 +167,7 @@ export const useGameStore = create<GameStore>()(
     {
       name: 'dragon-cards-storage',
       storage: createJSONStorage(() => localStorage),
-      merge: (persistedState, currentState) => Object.assign(currentState, persistedState),
-      partialize: (state) => ({
+      partialize: (state): PersistedGameState => ({
         balance: state.balance,
         isSoundOn: state.isSoundOn,
         risk: state.risk,
