@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code artifacts
+.claude
+docs/superpowers
+.superpowers
