@@ -1,7 +1,7 @@
 import { BetInput } from '@/features/place-bet';
 import { RiskSelector } from '@/features/select-risk';
 import { useAudio } from '@/features/toggle-sound';
-import { Button } from '@/shared/ui';
+import { Button, AnimatedNumber } from '@/shared/ui';
 import { GamePhase } from '@/shared/types';
 import { useGameStore } from '@/app/store/game-store';
 import { useShallow } from 'zustand/react/shallow';
@@ -42,7 +42,9 @@ export const Sidebar = () => {
             <span className="text-sm uppercase text-white/20 tracking-[0.2em]">
               {BALANCE_LABEL}
             </span>
-            <span className="text-sm text-white">{balance.toFixed(2)}</span>
+            <span className="text-sm text-white">
+              <AnimatedNumber value={balance} decimals={2} duration={0.8} />
+            </span>
           </div>
         </div>
       </div>
