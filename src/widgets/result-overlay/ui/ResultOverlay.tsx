@@ -65,7 +65,7 @@ export const ResultOverlay = () => {
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ repeat: Infinity, duration: 1 }}
-                  className="text-4xl md:text-6xl font-black text-dragon-gold drop-shadow-[0_0_30px_rgba(255,204,0,0.6)] uppercase tracking-tighter text-center px-4"
+                  className="text-4xl md:text-6xl font-black text-dragon-gold drop-shadow-glow-gold uppercase tracking-tighter text-center px-4"
                 >
                   {title}
                 </motion.div>
@@ -80,7 +80,7 @@ export const ResultOverlay = () => {
                 </div>
               </div>
             ) : (
-              <div className="text-3xl md:text-5xl font-black text-neon-pink drop-shadow-[0_0_30px_rgba(255,0,212,0.4)] uppercase text-center px-4">
+              <div className="text-3xl md:text-5xl font-black text-neon-pink drop-shadow-glow-pink uppercase text-center px-4">
                 {title}
               </div>
             )}

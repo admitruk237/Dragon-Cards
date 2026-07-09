@@ -48,10 +48,8 @@ export const DragonCard = memo(
 
     let borderColor = 'border-border';
     if (showFront) {
-      if (resultStatus === 'win')
-        borderColor = 'border-success shadow-[0_0_15px_rgba(74,222,128,0.5)]';
-      else if (resultStatus === 'lost')
-        borderColor = 'border-destructive shadow-[0_0_15px_rgba(255,23,68,0.5)]';
+      if (resultStatus === 'win') borderColor = 'border-success shadow-glow-success';
+      else if (resultStatus === 'lost') borderColor = 'border-destructive shadow-glow-destructive';
       else borderColor = 'border-white/20';
     }
 
@@ -93,7 +91,7 @@ export const DragonCard = memo(
                   resultStatus === 'lost' && 'bg-destructive/10'
                 )}
               >
-                <span className="relative z-20 text-[8px] max-xs:text-[6px] md:text-[10px] font-black uppercase text-white/50 tracking-[0.2em] max-xs:tracking-[0.1em] text-center mb-0.5 md:mb-1">
+                <span className="relative z-20 text-4xs max-xs:text-5xs md:text-3xs font-black uppercase text-white/50 tracking-super max-xs:tracking-widest text-center mb-0.5 md:mb-1">
                   {dragonType}
                 </span>
               </div>

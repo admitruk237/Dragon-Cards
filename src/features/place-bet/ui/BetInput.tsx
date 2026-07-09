@@ -13,7 +13,7 @@ const DOUBLE_BET_LABEL = 'x2';
 const MAX_BET_BUTTON_LABEL = 'Max';
 
 const BET_ACTION_BUTTON_CLASS =
-  'h-7 px-2 text-[10px] font-black text-white/40 hover:text-white rounded-md transition-all active:scale-95';
+  'h-7 px-2 text-3xs font-black text-white/40 hover:text-white rounded-md transition-all active:scale-95';
 
 export const BetInput = () => {
   const { playSound } = useAudio();
@@ -37,7 +37,7 @@ export const BetInput = () => {
   return (
     <div className="flex flex-col gap-1.5 w-full">
       <div className="flex flex-col gap-2 max-xs:gap-1 px-0.5">
-        <span className="text-sm max-xs:text-xs font-bold text-white uppercase tracking-[0.15em]">
+        <span className="text-sm max-xs:text-xs font-bold text-white uppercase tracking-label">
           {BET_AMOUNT_LABEL}
         </span>
         <div className="flex justify-between">
@@ -46,7 +46,7 @@ export const BetInput = () => {
         </div>
       </div>
 
-      <div className="relative flex items-center bg-surface-input border border-muted rounded-xl transition-all duration-200 focus-within:border-blue-500/40 focus-within:ring-1 focus-within:ring-blue-500/10">
+      <div className="relative flex items-center bg-surface-input border border-muted rounded-xl transition-all duration-200 focus-within:border-focus/40 focus-within:ring-1 focus-within:ring-focus/10">
         <Input
           type="number"
           value={betAmount || ''}

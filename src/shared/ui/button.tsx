@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'w-full bg-action-blue p-5 cursor-pointer text-white font-black text-sm rounded-md hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_30px_rgba(0,242,255,0.3)] hover:shadow-[0_0_20px_rgba(0,242,255,0.5)] disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed group/btn overflow-hidden relative',
+          'w-full bg-action-blue p-5 cursor-pointer text-white font-black text-sm rounded-md hover:scale-[1.02] active:scale-95 transition-all shadow-glow-cyan hover:shadow-glow-cyan-strong disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed group/btn overflow-hidden relative',
         outline:
           'bg-surface-panel p-4 h-auto aspect-square rounded-md text-base text-white/40 hover:bg-surface-hover hover:text-white/80 transition-all border border-muted active:scale-95',
         secondary:
@@ -20,7 +20,7 @@ const buttonVariants = cva(
         destructive:
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
         link: 'text-primary underline-offset-4 hover:underline',
-        neon: 'bg-neon-pink text-white shadow-[0_0_30px_rgba(255,0,212,0.5)] uppercase font-black tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all relative overflow-hidden after:content-[""] after:absolute after:inset-0 after:bg-gradient-to-r after:from-white/0 after:via-white/20 after:to-white/0 after:-translate-x-full hover:after:translate-x-full after:transition-transform after:duration-1000',
+        neon: 'bg-neon-pink text-white shadow-glow-pink-strong uppercase font-black tracking-super rounded-full hover:scale-105 active:scale-95 transition-all relative overflow-hidden after:content-[""] after:absolute after:inset-0 after:bg-gradient-to-r after:from-white/0 after:via-white/20 after:to-white/0 after:-translate-x-full hover:after:translate-x-full after:transition-transform after:duration-1000',
       },
       size: {
         default:

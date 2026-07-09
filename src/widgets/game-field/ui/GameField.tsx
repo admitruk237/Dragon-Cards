@@ -146,7 +146,7 @@ export const GameField = () => {
 
                     <Badge
                       variant={getMultiplierVariant(category)}
-                      className="px-2 py-0.5 text-[8px] max-xs:px-1 max-xs:text-[6px] md:px-3 md:py-1 md:text-[10px] xl:px-4 xl:py-1.5 xl:text-[11px]"
+                      className="px-2 py-0.5 text-4xs max-xs:px-1 max-xs:text-5xs md:px-3 md:py-1 md:text-3xs xl:px-4 xl:py-1.5 xl:text-2xs"
                     >
                       {multiplier}
                       {typeof multiplier === 'number' ? 'x' : ''}

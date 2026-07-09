@@ -29,7 +29,7 @@ export const RiskSelector = () => {
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="flex justify-between items-center px-0.5">
-        <span className="text-sm max-xs:text-xs font-bold text-white  tracking-[0.15em]">
+        <span className="text-sm max-xs:text-xs font-bold text-white tracking-label">
           {RISK_LEVEL_LABEL}
         </span>
       </div>
@@ -39,13 +39,13 @@ export const RiskSelector = () => {
         value={risk}
         onValueChange={handleRiskChange}
         disabled={isLocked}
-        className="grid grid-cols-4 gap-1.5 p-1  transition-all duration-200 focus-within:border-blue-500/40"
+        className="grid grid-cols-4 gap-1.5 p-1 transition-all duration-200 focus-within:border-focus/40"
       >
         {(Object.keys(RISK_CONFIG) as RiskLevel[]).map((level) => (
           <ToggleGroupItem
             key={level}
             value={level}
-            className="h-9 max-xs:h-7 bg-surface-highlight px-0 text-[10px] max-xs:text-[8px] font-black uppercase tracking-wider rounded-lg border-none data-[state=on]:bg-neon-cyan/10 data-[state=on]:text-neon-cyan data-[state=on]:shadow-[inset_0_0_10px_rgba(0,242,255,0.1)] hover:bg-muted transition-all"
+            className="h-9 max-xs:h-7 bg-surface-highlight px-0 text-3xs max-xs:text-4xs font-black uppercase tracking-wider rounded-lg border-none data-[state=on]:bg-neon-cyan/10 data-[state=on]:text-neon-cyan data-[state=on]:shadow-glow-cyan-inset hover:bg-muted transition-all"
           >
             {level}
           </ToggleGroupItem>
