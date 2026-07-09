@@ -96,6 +96,8 @@ export const GameField = () => {
 
   const bottomCardsList = useMemo(() => bottomCards.map((c) => c.id), [bottomCards]);
 
+  const handleFlip = useCallback(() => playSound('flip'), [playSound]);
+
   return (
     <div className="flex relative h-full flex-col items-center gap-12 max-xs:gap-8 md:gap-20 xl:gap-28 w-full max-w-6xl p-2 md:p-6 animate-in fade-in zoom-in duration-500">
       <SoundToggle />
@@ -109,7 +111,7 @@ export const GameField = () => {
               isRevealed={card.isRevealed}
               resultStatus={card.resultStatus}
               gamePhase={gamePhase}
-              onFlip={() => playSound('flip')}
+              onFlip={handleFlip}
             />
           ))}
         </div>

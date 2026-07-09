@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/shared/lib/cn';
 import { type DragonType, GamePhase, type ResultStatus } from '@/shared/types';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 const CARD_BACK = '/assets/cards/card_back.webp';
 const CARD_ALT_TEXT = 'Card';
@@ -21,7 +21,6 @@ interface Props {
   dragonType?: DragonType;
   type: 'top' | 'bottom';
   className?: string;
-  onClick?: () => void;
   gamePhase: GamePhase;
   onFlip?: () => void;
 }
@@ -33,14 +32,15 @@ export const DragonCard = memo(
     dragonType = 'fire',
     type,
     className,
-    onClick,
     gamePhase,
     onFlip,
   }: Props) => {
+    const prevRevealed = useRef(isRevealed);
     useEffect(() => {
-      if (isRevealed && onFlip) {
-        onFlip();
+      if (isRevealed && !prevRevealed.current) {
+        onFlip?.();
       }
+      prevRevealed.current = isRevealed;
     }, [isRevealed, onFlip]);
 
     const showFront = type === 'bottom' ? true : isRevealed;
@@ -64,7 +64,6 @@ export const DragonCard = memo(
           type !== 'bottom' && 'cursor-default',
           className
         )}
-        onClick={onClick}
       >
         <AnimatePresence mode="wait">
           <motion.div

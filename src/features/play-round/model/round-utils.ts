@@ -5,9 +5,6 @@ import { getMultiplierCategory, type MultiplierCategory } from '@/entities/risk'
 interface RoundResult {
   updatedTop: Card[];
   updatedBottom: Card[];
-  totalMultiplier: number;
-  hasLostMatch: boolean;
-  matchesFound: number;
   result: 'win' | 'lost' | 'draw';
   resultCategory: MultiplierCategory;
   winAmount: number;
@@ -40,16 +37,11 @@ export const calculateRoundResult = (
   const hasLostMatch = gameResults.some((r) => r.isLost);
   const totalMultiplier = gameResults.reduce((acc, r) => acc + r.multiplier, 0);
 
-  const isLost = hasLostMatch;
-  const isDraw = matchesFound === 0;
+  const base = { updatedTop, updatedBottom };
 
-  if (isDraw) {
+  if (matchesFound === 0) {
     return {
-      updatedTop,
-      updatedBottom,
-      totalMultiplier,
-      hasLostMatch,
-      matchesFound,
+      ...base,
       result: 'draw',
       resultCategory: 'draw',
       winAmount: 0,
@@ -57,13 +49,9 @@ export const calculateRoundResult = (
     };
   }
 
-  if (isLost) {
+  if (hasLostMatch) {
     return {
-      updatedTop,
-      updatedBottom,
-      totalMultiplier,
-      hasLostMatch,
-      matchesFound,
+      ...base,
       result: 'lost',
       resultCategory: 'lost',
       winAmount: 0,
@@ -73,11 +61,7 @@ export const calculateRoundResult = (
 
   const winAmount = betAmount * totalMultiplier;
   return {
-    updatedTop,
-    updatedBottom,
-    totalMultiplier,
-    hasLostMatch,
-    matchesFound,
+    ...base,
     result: 'win',
     resultCategory: getMultiplierCategory(totalMultiplier),
     winAmount,

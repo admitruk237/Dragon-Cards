@@ -1,2 +1,2 @@
-export { SoundToggle } from './SoundToggle';
-export { useAudio } from './hooks/useAudio';
+export { SoundToggle } from './ui/SoundToggle';
+export { useAudio } from './model/useAudio';

@@ -1,12 +1,17 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useGameStore } from '@/app/store/game-store';
 import { useEffect, useState } from 'react';
-import { Button, AnimatedNumber } from '@/shared/ui';
+import { AnimatedNumber, Button } from '@/shared/ui';
 import { getMultiplierTitle } from '@/entities/risk';
 import { GamePhase } from '@/shared/types';
 import { useAudio } from '@/features/toggle-sound';
 import { useShallow } from 'zustand/react/shallow';
-import { CURRENCY_SYMBOL, RESULT_REVEAL_DELAY_MS } from '@/shared/constants';
+import {
+  CURRENCY_SYMBOL,
+  RESULT_REVEAL_DELAY_MS,
+  WIN_AMOUNT_DECIMALS,
+  WIN_COUNT_UP_DURATION_S,
+} from '@/shared/constants';
 
 const PLAY_AGAIN_LABEL = 'Play Again';
 
@@ -36,7 +41,7 @@ export const ResultOverlay = () => {
       return () => clearTimeout(timer);
     }
     setShow(false);
-  }, [gamePhase, result]);
+  }, [gamePhase, result, playSound]);
 
   const title = resultCategory ? getMultiplierTitle(resultCategory) : '';
 
@@ -65,7 +70,12 @@ export const ResultOverlay = () => {
                   {title}
                 </motion.div>
                 <div className="text-2xl md:text-4xl font-mono text-white font-bold">
-                  + <AnimatedNumber value={winAmount} decimals={0} duration={1.5} />{' '}
+                  +{' '}
+                  <AnimatedNumber
+                    value={winAmount}
+                    decimals={WIN_AMOUNT_DECIMALS}
+                    duration={WIN_COUNT_UP_DURATION_S}
+                  />{' '}
                   <span className="opacity-50">{CURRENCY_SYMBOL}</span>
                 </div>
               </div>

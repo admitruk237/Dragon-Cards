@@ -3,6 +3,7 @@ import { useGameStore } from '@/app/store/game-store';
 import { useAudio } from '@/features/toggle-sound';
 import { useShallow } from 'zustand/react/shallow';
 import { CURRENCY_SYMBOL, MAX_BET } from '@/shared/constants';
+import { GamePhase } from '@/shared/types';
 
 const BET_AMOUNT_LABEL = 'Bet Amount';
 const MAX_BET_LABEL_PREFIX = 'Max Bet:';
@@ -11,18 +12,27 @@ const HALF_BET_LABEL = '1/2';
 const DOUBLE_BET_LABEL = 'x2';
 const MAX_BET_BUTTON_LABEL = 'Max';
 
+const BET_ACTION_BUTTON_CLASS =
+  'h-7 px-2 text-[10px] font-black text-white/40 hover:text-white rounded-md transition-all active:scale-95';
+
 export const BetInput = () => {
   const { playSound } = useAudio();
   const { betAmount, setBetAmount, isLocked, halfBet, doubleBet, maxBet } = useGameStore(
     useShallow((state) => ({
       betAmount: state.betAmount,
       setBetAmount: state.setBetAmount,
-      isLocked: state.isLocked,
+      isLocked: state.gamePhase !== GamePhase.IDLE,
       halfBet: state.halfBet,
       doubleBet: state.doubleBet,
       maxBet: state.maxBet,
     }))
   );
+
+  const betActions = [
+    { label: HALF_BET_LABEL, onSelect: halfBet },
+    { label: DOUBLE_BET_LABEL, onSelect: doubleBet },
+    { label: MAX_BET_BUTTON_LABEL, onSelect: maxBet },
+  ];
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
@@ -47,45 +57,22 @@ export const BetInput = () => {
         />
 
         <div className="absolute right-1.5 flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            type="button"
-            onClick={() => {
-              playSound('click');
-              halfBet();
-            }}
-            disabled={isLocked}
-            className="h-7 px-2 text-[10px] font-black text-white/40 hover:text-white rounded-md transition-all active:scale-95"
-          >
-            {HALF_BET_LABEL}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            type="button"
-            onClick={() => {
-              playSound('click');
-              doubleBet();
-            }}
-            disabled={isLocked}
-            className="h-7 px-2 text-[10px] font-black text-white/40 hover:text-white rounded-md transition-all active:scale-95"
-          >
-            {DOUBLE_BET_LABEL}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            type="button"
-            onClick={() => {
-              playSound('click');
-              maxBet();
-            }}
-            disabled={isLocked}
-            className="h-7 px-2 text-[10px] font-black text-white/40 hover:text-white rounded-md transition-all active:scale-95"
-          >
-            {MAX_BET_BUTTON_LABEL}
-          </Button>
+          {betActions.map(({ label, onSelect }) => (
+            <Button
+              key={label}
+              variant="ghost"
+              size="sm"
+              type="button"
+              onClick={() => {
+                playSound('click');
+                onSelect();
+              }}
+              disabled={isLocked}
+              className={BET_ACTION_BUTTON_CLASS}
+            >
+              {label}
+            </Button>
+          ))}
         </div>
       </div>
     </div>

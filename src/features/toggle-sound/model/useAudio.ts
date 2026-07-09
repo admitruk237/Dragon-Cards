@@ -4,13 +4,12 @@ import { useGameStore } from '@/app/store/game-store';
 const SOUND_MAP = {
   flip: '/sounds/card-flip.mp3',
   click: '/sounds/click.wav',
-  bet: '/sounds/bet.mp3',
   win: '/sounds/reward.mp3',
-  reveal: '/sounds/reveal.mp3',
-  result: '/sounds/result.mp3',
   lose: '/sounds/lose.m4a',
   draw: '/sounds/draw.wav',
 } as const;
+
+const DEFAULT_VOLUME = 0.3;
 
 export type SoundKey = keyof typeof SOUND_MAP;
 
@@ -19,7 +18,7 @@ export const useAudio = () => {
   const audioCache = useRef<Partial<Record<SoundKey, HTMLAudioElement>>>({});
 
   const playSound = useCallback(
-    (key: SoundKey, volume = 0.3) => {
+    (key: SoundKey, volume = DEFAULT_VOLUME) => {
       if (!isSoundOn) return;
 
       if (!audioCache.current[key]) {

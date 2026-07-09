@@ -43,7 +43,7 @@ export const Sidebar = () => {
               {BALANCE_LABEL}
             </span>
             <span className="text-sm text-white">
-              <AnimatedNumber value={balance} decimals={2} duration={0.8} />
+              <AnimatedNumber value={balance} />
             </span>
           </div>
         </div>

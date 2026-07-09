@@ -17,7 +17,7 @@ export const MobileBalance = () => {
       </span>
       <span className="text-sm max-xs:text-xs font-bold text-white">
         {CURRENCY_SYMBOL}
-        <AnimatedNumber value={balance} decimals={2} duration={0.8} />
+        <AnimatedNumber value={balance} />
       </span>
     </div>
   );

@@ -2,7 +2,7 @@ import { useGameStore } from '@/app/store/game-store';
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui';
 import { RISK_CONFIG } from '@/entities/risk';
 import { useAudio } from '@/features/toggle-sound';
-import { type RiskLevel } from '@/shared/types';
+import { GamePhase, type RiskLevel } from '@/shared/types';
 import { useShallow } from 'zustand/react/shallow';
 
 const RISK_LEVELS: RiskLevel[] = ['low', 'medium', 'high', 'classic'];
@@ -13,7 +13,7 @@ export const RiskSelector = () => {
     useShallow((state) => ({
       risk: state.risk,
       setRisk: state.setRisk,
-      isLocked: state.isLocked,
+      isLocked: state.gamePhase !== GamePhase.IDLE,
     }))
   );
 

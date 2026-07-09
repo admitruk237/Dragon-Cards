@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 
 interface Props {
   id: string;
-  isRevealed?: boolean;
   resultStatus?: ResultStatus;
   dragonType?: DragonType;
   type: 'top' | 'bottom';
