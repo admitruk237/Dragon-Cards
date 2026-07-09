@@ -1,7 +1,7 @@
 import { BetInput } from '@/features/place-bet';
 import { RiskSelector } from '@/features/select-risk';
 import { useAudio } from '@/features/toggle-sound';
-import { Button, AnimatedNumber } from '@/shared/ui';
+import { AnimatedNumber, Button } from '@/shared/ui';
 import { GamePhase } from '@/shared/types';
 import { useGameStore } from '@/app/store/game-store';
 import { useShallow } from 'zustand/react/shallow';
